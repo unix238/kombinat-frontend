@@ -1,0 +1,130 @@
+@import '~react-image-gallery/styles/css/image-gallery.css';
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.images {
+    overflow: hidden;
+    height: 100%;
+}
+
+.wrapper {
+    width: 940px;
+    margin: 0 auto;
+}
+
+.detail__left {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail__right {
+    width: 460px;
+    display: flex;
+    flex-direction: column;
+}
+
+.description {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.left {
+    margin-top: 51px;
+}
+
+.container {
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 44px;
+}
+
+.price {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 38px;
+    line-height: 44px;
+    margin-top: 64px;
+}
+
+.button__group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    width: 220px;
+    height: 40px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.add__to__favor {
+    border: 1px solid #000;
+}
+
+.add__to__cart {
+    background-color: #000;
+    color: #fff;
+}
+
+.size__choose {
+    margin-top: 91px;
+}
+
+.size__subtitle {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 6px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #000;
+    margin-bottom: 12px;
+    padding-left: 15px;
+}
+
+.decripition__subtitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #505050;
+}
+
+.decripition__title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    color: #505050;
+}
+
+.recent {
+    margin-top: 400px;
+}

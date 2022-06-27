@@ -1,0 +1,30 @@
+.news__card {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
+.news__card__title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 44px;
+}
+
+.news__card__subtitle {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 16px;
+  margin-bottom: 25px;
+}
+
+.news__card__left {
+  width: 480px;
+  padding-right: 10px;
+}
+
+.news__card__right {
+  width: 459px;
+}

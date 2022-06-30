@@ -3,6 +3,7 @@ import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { defaultRoutes } from '../router/index';
 import { Header } from '../components/UI/Header/Header';
 import { Footer } from './UI/Footer/Footer';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export const AppRouter = () => {
   const [routes, setRoutes] = useState(defaultRoutes);
@@ -19,6 +20,7 @@ export const AppRouter = () => {
             key={route.path}
           />
         ))}
+        <Route path={'/protected'} element={<ProtectedRoute />} exact={true} />
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cl from './Header.module.css';
 import { Logo } from '../Icons/Logo';
 import { Search } from '../Icons/Search';
@@ -9,6 +9,8 @@ import { Favorite } from '../Icons/Favorite';
 import { ShoppingBag } from '../Icons/ShoppingBag';
 import { Account } from '../Icons/Account';
 import { Link } from 'react-router-dom';
+
+import ServiceApi from '../../../api/ServiceApi';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -104,6 +106,23 @@ export const Header = () => {
       ],
     },
   ]);
+  const [user, setUser] = useState(null);
+
+  const loadUser = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const user = await ServiceApi.checkToken(token);
+        setUser(user);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
 
   return (
     <div className={cl.root}>
@@ -176,7 +195,8 @@ export const Header = () => {
                 </div>
               </div>
               <div className={cl.navAccount}>
-                Добро пожаловать, <span className={cl.user}>Гость!</span>
+                Добро пожаловать,{' '}
+                <span className={cl.user}>{user ? user.name : 'Гость!'}</span>
               </div>
             </div>
             <div className={cl.bottomLinks}>

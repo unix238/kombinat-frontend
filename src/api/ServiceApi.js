@@ -5,7 +5,6 @@ const link = 'http://localhost:3001/';
 export default class ServiceApi {
   static async getPosts(page = 1, limit = 3) {
     const req = await axios.get(`${link}news/get?page=${page}&limit=${limit}`);
-    console.log(req.data);
     return req.data;
   }
   static async login(username, password) {
@@ -23,5 +22,15 @@ export default class ServiceApi {
       return req.data;
     }
     return false;
+  }
+
+  static async getItems(page, limit = 12) {
+    const req = await axios.get(`${link}items/get?page=${page}&limit=${limit}`);
+    return req;
+  }
+
+  static async getItemByID(id) {
+    const req = await axios.get(`${link}items/get/${id}`);
+    return req.data;
   }
 }

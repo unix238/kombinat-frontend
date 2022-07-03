@@ -12,10 +12,6 @@ export const ImageGallery = ({ images }) => {
     setCurrentImage(currentImage > 0 ? currentImage - 1 : images.length - 1);
   };
 
-  useEffect(() => {
-    console.log(images);
-  });
-
   return (
     <div className={cl.image__galery}>
       <div className={cl.thumbnails}>

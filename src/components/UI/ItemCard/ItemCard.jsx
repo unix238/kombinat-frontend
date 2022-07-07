@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import ImageGallery from 'react-image-gallery';
 import { Link } from 'react-router-dom';

@@ -29,6 +29,7 @@ export const Detail = () => {
   const [item, setItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
+  const [recent, setRecent] = useState([]);
 
   const loadData = async () => {
     const location = window.location.pathname.split('/')[2];
@@ -44,9 +45,40 @@ export const Detail = () => {
     setImages(temp);
   };
 
+  const addRecent = () => {
+    const recent = JSON.parse(localStorage.getItem('recent'));
+    if (recent && recent.length > 3) {
+      recent.pop();
+    }
+    if (recent && recent.length > 0) {
+      for (let i = 0; i < recent.length; i++) {
+        try {
+          console.log(recent[i]._id);
+          if (recent[i]._id == item._id) {
+            recent.splice(i, 1);
+          }
+        } catch (e) {
+          console.log('Error: ', e, 'Item: ', recent);
+        }
+      }
+      localStorage.setItem('recent', JSON.stringify([...recent, item]));
+      setRecent(JSON.parse(localStorage.getItem('recent')));
+    } else {
+      localStorage.setItem('recent', JSON.stringify([item]));
+      setRecent(JSON.parse(localStorage.getItem('recent')));
+    }
+    // localStorage.removeItem('recent');
+  };
+
   useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (item != null) {
+      addRecent();
+    }
+  }, [item]);
 
   return (
     <div className='detail'>
@@ -125,7 +157,9 @@ export const Detail = () => {
               </div>
             </div>
           </div>
-          <div className='recent'>{/* <Recent images={images} /> */}</div>
+          <div className='recent'>
+            <Recent cards={recent} />
+          </div>
         </div>
       ) : (
         <>Loading</>

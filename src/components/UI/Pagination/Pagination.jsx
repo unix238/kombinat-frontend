@@ -29,6 +29,7 @@ export const Pagination = ({ setPage, totalPages }) => {
           <>
             {Array.from({ length: 3 }, (_, i) => i + 1).map((page, index) => (
               <div
+                key={index}
                 className={
                   currentPage == index + 1
                     ? [cl.active, cl.page].join(' ')
@@ -55,6 +56,7 @@ export const Pagination = ({ setPage, totalPages }) => {
           Array.from({ length: totalPages }, (_, i) => i + 1).map(
             (page, index) => (
               <div
+                key={index}
                 className={
                   currentPage == index + 1
                     ? [cl.active, cl.page].join(' ')

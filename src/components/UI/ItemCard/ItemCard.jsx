@@ -16,8 +16,11 @@ export const ItemCard = ({ item }) => {
         </Link>
       </div>
       <div className={cl.item__text}>
-        <div className={cl.item__title}>{item.title}</div>
-        <div className={cl.item__subtitle}>{item.descriptions[0]}</div>
+        <div className={cl.top}>
+          <div className={cl.item__title}>{item.title}</div>
+          <div className={cl.item__subtitle}>{item.descriptions[0]}</div>
+        </div>
+
         <div className={cl.item__other}>
           <div className={cl.item__price}>{item.price} ₸</div>
           <div className={cl.item__links}>

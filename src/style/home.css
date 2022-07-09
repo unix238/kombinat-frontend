@@ -2,6 +2,7 @@
   font-family: 'Roboto Flex', sans-serif;
   src: local('Roboto Flex'), url('../fonts/robotoFlex.ttf') format('truetype');
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -36,6 +37,7 @@
   align-items: center;
   margin-bottom: 100px;
 }
+
 .faq__card {
   display: flex;
   flex-direction: row;

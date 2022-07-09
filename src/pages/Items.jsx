@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ShoppingCart } from '../components/UI/Icons/ShoppingCart';
-import { ShareCard } from '../components/UI/Icons/ShareCard';
 
-import ImageGallery from 'react-image-gallery';
 import { ArrowRight } from '../components/UI/Icons/ArrowRight';
-
-import { Link } from 'react-router-dom';
 
 import '../style/items.css';
 import { Recent } from '../components/UI/Recent/Recent';
@@ -37,10 +32,12 @@ export const Items = () => {
       <div className='wrapper'>
         <div className='options'>
           <div className='filters'>
-            <div>
-              <ArrowRight />
+            <div className='filters__nav'>
+              <div>
+                <ArrowRight />
+              </div>
+              <div className='options__text'>Фильтры</div>
             </div>
-            <div className='options__text'>Фильтры</div>
           </div>
           <div className='sortings'>
             <div className='options__text'>Сортировка</div>

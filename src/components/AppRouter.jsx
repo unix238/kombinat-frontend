@@ -4,6 +4,7 @@ import { defaultRoutes } from '../router/index';
 import { Header } from '../components/UI/Header/Header';
 import { Footer } from './UI/Footer/Footer';
 import { ProtectedRoute } from './ProtectedRoute';
+import { Admin } from '../pages/Admin';
 
 export const AppRouter = () => {
   const [routes, setRoutes] = useState(defaultRoutes);
@@ -21,6 +22,11 @@ export const AppRouter = () => {
           />
         ))}
         <Route path={'/protected'} element={<ProtectedRoute />} exact={true} />
+        <Route
+          path={'/admin'}
+          element={<ProtectedRoute admin={true} Component={Admin} />}
+          exact={true}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

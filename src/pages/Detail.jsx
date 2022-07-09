@@ -4,6 +4,7 @@ import ImageGallery from 'react-image-gallery';
 import { Help } from '../components/UI/Icons/Help';
 import { Recent } from '../components/UI/Recent/Recent';
 import ServiceApi from '../api/ServiceApi';
+import { Loader } from '../components/UI/Loader/Loader';
 
 // const images = [
 //   {
@@ -162,7 +163,7 @@ export const Detail = () => {
           </div>
         </div>
       ) : (
-        <>Loading</>
+        <Loader />
       )}
     </div>
   );

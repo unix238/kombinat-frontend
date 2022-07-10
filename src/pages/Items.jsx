@@ -13,6 +13,33 @@ export const Items = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const [basketItems, setBasketItems] = useState([]);
+
+  const getAllBasketItems = async () => {
+    const items = JSON.parse(localStorage.getItem('basket'));
+    if (items) {
+      setBasketItems(items);
+    }
+  };
+
+  const addToBasket = (id) => {
+    const basket = JSON.parse(localStorage.getItem('basket'));
+    if (basket) {
+      if (basket.find((item) => item === id)) {
+        const newBasket = basket.filter((item) => item !== id);
+        localStorage.setItem('basket', JSON.stringify(newBasket));
+        setBasketItems(newBasket);
+      } else {
+        basket.push(id);
+        localStorage.setItem('basket', JSON.stringify(basket));
+        setBasketItems(basket);
+      }
+    } else {
+      localStorage.setItem('basket', JSON.stringify([id]));
+      setBasketItems([id]);
+    }
+  };
+
   const loadData = async () => {
     const fetchedItems = await ServiceApi.getItems(page);
     setItems(fetchedItems.data);
@@ -21,6 +48,7 @@ export const Items = () => {
 
   useEffect(() => {
     loadData();
+    getAllBasketItems();
   }, []);
 
   useEffect(() => {
@@ -48,7 +76,7 @@ export const Items = () => {
         </div>
         <div className='items__list'>
           {items.map((item) => (
-            <ItemCard key={item._id} item={item} />
+            <ItemCard key={item._id} item={item} addToBasket={addToBasket} />
           ))}
         </div>
         <Pagination totalPages={totalPages} setPage={setPage} />

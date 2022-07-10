@@ -156,10 +156,14 @@ export const Header = () => {
                 <Notifications width={'25'} height={'25'} />
               </div>
               <div className={cl.link}>
-                <Favorite width={'25'} height={'25'} />
+                <Link to='/wishlist'>
+                  <Favorite width={'25'} height={'25'} />
+                </Link>
               </div>
               <div className={cl.link}>
-                <ShoppingBag width={'25'} height={'25'} />
+                <Link to={`/basket`}>
+                  <ShoppingBag width={'25'} height={'25'} />
+                </Link>
               </div>
               <div className={cl.link}>
                 <Account width={'25'} height={'25'} />

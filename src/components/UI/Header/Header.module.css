@@ -28,6 +28,7 @@ a {
 .search {
   cursor: pointer;
 }
+
 .logo {
   cursor: pointer;
 }
@@ -76,6 +77,7 @@ a {
   padding-bottom: 18px;
   border-bottom: 2px solid #e0e0e0;
 }
+
 .navLinksMainTags {
   display: flex;
   justify-content: flex-start;
@@ -113,7 +115,7 @@ a {
 }
 
 .dropDownMenu {
-  background: #000;
+  background: rgba(0, 0, 0, .9);
   margin-top: 20px;
   position: absolute;
   width: 100%;
@@ -134,6 +136,7 @@ a {
 
   height: 100%;
 }
+
 .dropDownMenuCard {
   width: 220px;
   font-style: normal;
@@ -165,5 +168,6 @@ a {
   left: 0;
   background: #000;
   opacity: 0.5;
-  filter: alpha(opacity = 50); /* required for opacity to work in IE */
+  filter: alpha(opacity=50);
+  /* required for opacity to work in IE */
 }

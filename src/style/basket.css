@@ -58,3 +58,10 @@
     text-decoration-line: underline;
     color: #808080;
 }
+
+.items {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}

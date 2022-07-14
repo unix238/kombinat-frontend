@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import { ShoppingCart } from '../Icons/ShoppingCart';
@@ -8,6 +9,7 @@ import cl from './ItemCard.module.css';
 
 export const ItemCard = ({ item, addToBasket }) => {
   const [inBasket, setInBasket] = useState(false);
+  const router = useNavigate();
   const check = () => {
     const basket = JSON.parse(localStorage.getItem('basket'));
     if (basket) {
@@ -25,10 +27,13 @@ export const ItemCard = ({ item, addToBasket }) => {
 
   return (
     <div className={cl.item__card}>
-      <div className={cl.item__image}>
-        <Link to={`/item/${item._id}`} itemr={item}>
-          <img src={item.images[0]} alt={item.name} />
-        </Link>
+      <div
+        className={cl.item__image}
+        onClick={() => {
+          router(`/item/${item._id}`);
+        }}
+      >
+        <img src={item.images[0]} alt={item.name} />
       </div>
       <div className={cl.item__text}>
         <div className={cl.top}>

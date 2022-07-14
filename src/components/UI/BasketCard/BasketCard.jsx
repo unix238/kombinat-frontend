@@ -3,8 +3,14 @@ import cl from './BasketCard.module.css';
 import { Select } from '../Select/Select';
 import { useEffect } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setSize, setQuantity, deleteItem } from '../../../rtk/toolkitReducer';
+
 export const BasketCard = ({ item, calcTotalCount }) => {
   const [isDeleted, setIsDeleted] = useState(false);
+
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.toolkit.items);
 
   return isDeleted ? null : (
     <div className={cl.item}>
@@ -33,11 +39,17 @@ export const BasketCard = ({ item, calcTotalCount }) => {
           <Select
             style={{ width: '220px' }}
             onChange={(e) => {
-              let total = e.target.value * item.price;
-              calcTotalCount(total);
+              // calcTotalCount(total);
+              console.log(e.target.value);
+              dispatch(
+                setQuantity({
+                  _id: item._id,
+                  quantity: parseInt(e.target.value),
+                })
+              );
             }}
           >
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => {
               return (
                 <option key={`q${i}`} value={i}>
                   Количество: {i}
@@ -53,6 +65,7 @@ export const BasketCard = ({ item, calcTotalCount }) => {
             const newBasket = JSON.parse(basket).filter((i) => i !== item._id);
             localStorage.setItem('basket', JSON.stringify(newBasket));
             setIsDeleted(true);
+            dispatch(deleteItem(item._id));
           }}
         >
           удалить X

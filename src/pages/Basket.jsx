@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Basket as BS } from '../components/UI/Basket/Basket';
+import { useSelector, useDispatch } from 'react-redux';
 
 import '../style/basket.css';
 
 export const Basket = () => {
   const [currentPage, setCurrentPage] = useState('basket');
   const [basketItems, setBasketItems] = useState(0);
+
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.toolkit.items);
+
   const allItems = () => {
     const basket = JSON.parse(localStorage.getItem('basket'));
     setBasketItems(basket.length);
@@ -45,7 +50,7 @@ export const Basket = () => {
           </div>
         </div>
         <div className='basket__main'>
-          {currentPage === 'basket' ? <BS /> : <>Wishlist</>}
+          <BS />
         </div>
       </div>
     </div>

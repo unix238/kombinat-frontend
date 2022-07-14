@@ -6,11 +6,15 @@ import { Recent } from '../components/UI/Recent/Recent';
 import ServiceApi from '../api/ServiceApi';
 import { Loader } from '../components/UI/Loader/Loader';
 
+import { useNavigate } from 'react-router-dom';
+
 export const Detail = () => {
   const [item, setItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
   const [recent, setRecent] = useState([]);
+
+  const router = useNavigate();
 
   const loadData = async () => {
     const location = window.location.pathname.split('/')[2];
@@ -53,7 +57,12 @@ export const Detail = () => {
 
   useEffect(() => {
     loadData();
+    console.log('dasdsa');
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [router]);
 
   useEffect(() => {
     if (item != null) {

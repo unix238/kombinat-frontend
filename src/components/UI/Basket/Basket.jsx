@@ -7,57 +7,55 @@ import ServiceApi from '../../../api/ServiceApi';
 import { useEffect } from 'react';
 import { Loader } from '../Loader/Loader';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setItem, clearItems } from '../../../rtk/toolkitReducer';
+
 export const Basket = () => {
   const [basketItems, setBasketItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const dispatch = useDispatch();
+  const RTKitems = useSelector((state) => state.toolkit.items);
+
   const loadItems = async () => {
     const items = JSON.parse(localStorage.getItem('basket'));
+    dispatch(clearItems());
     if (items) {
       items.map(async (id) => {
         setIsLoading(true);
         const item = await ServiceApi.getItemByID(id);
         setBasketItems((prev) => [...prev, item]);
+        dispatch(setItem({ ...item, quantity: 1 }));
       });
     }
-    // countTotal();
+    setIsLoading(false);
   };
 
   const [totalCount, setTotalCount] = useState(0);
-  const calcTotalCount = (amount) => {
-    setTotalCount(amount);
-  };
-
-  // const countTotal = async () => {
-  //   let total = 0;
-  //   basketItems.map((item) => {
-  //     total += item.price;
-  //   });
-  //   setTotalCount(total);
-  //   console.log(total);
-  // };
 
   useEffect(() => {
     loadItems();
-    setIsLoading(false);
   }, []);
 
-  // useEffect(() => {
-  //   countTotal();
-  // }, [basketItems]);
+  useEffect(() => {
+    countPrice();
+  }, [RTKitems]);
+
+  const countPrice = () => {
+    let temp = 0;
+    RTKitems.map((item) => {
+      temp += item.price * item.quantity;
+    });
+
+    setTotalCount(temp);
+  };
 
   return (
     <div className={cl.basket}>
       {!isLoading ? (
         <div className={cl.items}>
           {basketItems.map((item) => {
-            return (
-              <BasketCard
-                item={item}
-                key={`bask${item._id}`}
-                calcTotalCount={calcTotalCount}
-              />
-            );
+            return <BasketCard item={item} key={`bask${item._id}`} />;
           })}
         </div>
       ) : (

@@ -7,7 +7,7 @@ import { ShareCard } from '../Icons/ShareCard';
 
 import cl from './ItemCard.module.css';
 
-export const ItemCard = ({ item, addToBasket }) => {
+export const ItemCard = ({ item, addToBasket, style }) => {
   const [inBasket, setInBasket] = useState(false);
   const router = useNavigate();
   const check = () => {
@@ -38,7 +38,9 @@ export const ItemCard = ({ item, addToBasket }) => {
       <div className={cl.item__text}>
         <div className={cl.top}>
           <div className={cl.item__title}>{item.title}</div>
-          <div className={cl.item__subtitle}>{item.descriptions[0]}</div>
+          <div className={cl.item__subtitle} style={style}>
+            {item.descriptions[0]}
+          </div>
         </div>
 
         <div className={cl.item__other}>

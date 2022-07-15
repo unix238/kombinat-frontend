@@ -67,9 +67,9 @@ export const Detail = () => {
     }
   }, [item]);
 
-  return (
-    <div className='detail'>
-      {!isLoading ? (
+  return !isLoading ? (
+    <>
+      <div className='detail'>
         <div className='wrapper'>
           <div className='detail'>
             <div className='detail__left'>
@@ -144,13 +144,13 @@ export const Detail = () => {
               </div>
             </div>
           </div>
-          <div className='recent'>
-            <Recent cards={recent} />
-          </div>
         </div>
-      ) : (
-        <Loader />
-      )}
-    </div>
+      </div>
+      <div className='recent'>
+        <Recent cards={recent} />
+      </div>
+    </>
+  ) : (
+    <Loader />
   );
 };

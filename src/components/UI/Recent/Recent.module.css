@@ -1,8 +1,14 @@
+.wrapper {
+    width: 940px;
+}
+
 .recently {
     display: flex;
     flex-direction: column;
     margin-top: 62px;
     margin-bottom: 21;
+    background: #000;
+    color: #fff
 }
 
 .recently__title {
@@ -11,6 +17,7 @@
     font-size: 32px;
     line-height: 36px;
     text-align: center;
+    padding-top: 20px;
 }
 
 .recently__cards {

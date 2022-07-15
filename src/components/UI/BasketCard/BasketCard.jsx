@@ -5,23 +5,39 @@ import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setSize, setQuantity, deleteItem } from '../../../rtk/toolkitReducer';
+import { useNavigate } from 'react-router-dom';
 
 export const BasketCard = ({ item, calcTotalCount }) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const dispatch = useDispatch();
   const items = useSelector((state) => state.toolkit.items);
+  const router = useNavigate();
 
   return isDeleted ? null : (
     <div className={cl.item}>
       <div className={cl.left}>
-        <div className={cl.image}>
+        <div
+          style={{ cursor: 'pointer' }}
+          className={cl.image}
+          onClick={() => {
+            router('/item/' + item._id);
+          }}
+        >
           <img src={item.images[0]} alt='clock' className={cl.img} />
         </div>
         <div className={cl.text}>
           <div className={cl.topText}>
             <div className={cl.title}>{item.seller}</div>
-            <div className={cl.subtitle}>{item.title}</div>
+            <div
+              className={cl.subtitle}
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                router('/item/' + item._id);
+              }}
+            >
+              {item.title}
+            </div>
           </div>
           <div className={cl.bottomText}>
             <div className={cl.subtitle}>Доставка из:</div>

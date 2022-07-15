@@ -32,32 +32,29 @@ export const Detail = () => {
 
   const addRecent = () => {
     const recent = JSON.parse(localStorage.getItem('recent'));
-    if (recent && recent.length > 3) {
-      recent.pop();
-    }
-    if (recent && recent.length > 0) {
-      for (let i = 0; i < recent.length; i++) {
-        try {
-          console.log(recent[i]._id);
-          if (recent[i]._id == item._id) {
-            recent.splice(i, 1);
-          }
-        } catch (e) {
-          console.log('Error: ', e, 'Item: ', recent);
-        }
-      }
-      localStorage.setItem('recent', JSON.stringify([...recent, item]));
-      setRecent(JSON.parse(localStorage.getItem('recent')));
-    } else {
+    if (!recent) {
       localStorage.setItem('recent', JSON.stringify([item]));
-      setRecent(JSON.parse(localStorage.getItem('recent')));
+      setRecent([item]);
+      return;
     }
-    // localStorage.removeItem('recent');
+    if (recent.map((item) => item._id).includes(item._id)) {
+      setRecent(recent);
+      return;
+    }
+    if (recent.length < 4) {
+      recent.unshift(item);
+      localStorage.setItem('recent', JSON.stringify(recent));
+      setRecent(recent);
+      return;
+    }
+    recent.pop();
+    recent.unshift(item);
+    localStorage.setItem('recent', JSON.stringify(recent));
+    setRecent(recent);
   };
 
   useEffect(() => {
     loadData();
-    console.log('dasdsa');
   }, []);
 
   useEffect(() => {
@@ -112,7 +109,7 @@ export const Detail = () => {
                     <select className='select'>
                       <option value='Выберите размер'>Выберите размер</option>
                       {item.sizes.map((size) => (
-                        <option value='1' key={size}>
+                        <option value='1' key={`${size}size`}>
                           {size}
                         </option>
                       ))}

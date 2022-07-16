@@ -45,6 +45,7 @@
     word-wrap: break-word;
     -webkit-box-orient: vertical;
     box-orient: vertical;
+    cursor: pointer;
 }
 
 .item__subtitle {

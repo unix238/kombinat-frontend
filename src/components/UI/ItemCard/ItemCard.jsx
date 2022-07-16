@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
 import { ShoppingCart } from '../Icons/ShoppingCart';
 import { ShareCard } from '../Icons/ShareCard';
 
-import cl from './ItemCard.module.css';
+import { addItemToBasket } from '../../../rtk/toolkitReducer';
 
-export const ItemCard = ({ item, addToBasket, style }) => {
-  const [inBasket, setInBasket] = useState(false);
+import cl from './ItemCard.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+
+export const ItemCard = ({ item, style }) => {
+  const items = useSelector((state) => state.toolkit.items);
+  const dispatch = useDispatch();
   const router = useNavigate();
+
+  const [inBasket, setInBasket] = useState(false);
+
   const check = () => {
-    const basket = JSON.parse(localStorage.getItem('basket'));
-    if (basket) {
-      if (basket.find((i) => i === item._id)) {
-        setInBasket(true);
-      } else {
-        setInBasket(false);
-      }
+    if (items.filter((i) => i._id === item._id).length > 0) {
+      setInBasket(true);
+    } else {
+      setInBasket(false);
     }
   };
 
   useEffect(() => {
     check();
-  }, [addToBasket]);
+  }, [items]);
 
   return (
     <div className={cl.item__card}>
@@ -37,7 +40,14 @@ export const ItemCard = ({ item, addToBasket, style }) => {
       </div>
       <div className={cl.item__text}>
         <div className={cl.top}>
-          <div className={cl.item__title}>{item.title}</div>
+          <div
+            className={cl.item__title}
+            onClick={() => {
+              router(`/item/${item._id}`);
+            }}
+          >
+            {item.title}
+          </div>
           <div className={cl.item__subtitle} style={style}>
             {item.descriptions[0]}
           </div>
@@ -48,7 +58,7 @@ export const ItemCard = ({ item, addToBasket, style }) => {
           <div className={cl.item__links}>
             <div
               onClick={() => {
-                addToBasket(item._id);
+                dispatch(addItemToBasket({ ...item, quantity: 1, size: '1' }));
               }}
             >
               {!inBasket ? <ShoppingCart /> : <ShoppingCart color={'#000'} />}

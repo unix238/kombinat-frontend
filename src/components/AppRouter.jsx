@@ -6,8 +6,16 @@ import { Footer } from './UI/Footer/Footer';
 import { ProtectedRoute } from './ProtectedRoute';
 import { Admin } from '../pages/Admin';
 
+import { loadBasketItems } from '../rtk/toolkitReducer';
+
+import { useDispatch } from 'react-redux';
+
 export const AppRouter = () => {
   const [routes, setRoutes] = useState(defaultRoutes);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadBasketItems());
+  });
 
   return (
     <BrowserRouter>

@@ -4,8 +4,12 @@ import { Select } from '../Select/Select';
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setSize, setQuantity, deleteItem } from '../../../rtk/toolkitReducer';
 import { useNavigate } from 'react-router-dom';
+import {
+  addItemToBasket,
+  setQuantity,
+  setSize,
+} from '../../../rtk/toolkitReducer';
 
 export const BasketCard = ({ item, calcTotalCount }) => {
   const [isDeleted, setIsDeleted] = useState(false);
@@ -37,6 +41,7 @@ export const BasketCard = ({ item, calcTotalCount }) => {
               }}
             >
               {item.title}
+              <div className={cl.subtitle}>{item.price} ₸</div>
             </div>
           </div>
           <div className={cl.bottomText}>
@@ -47,24 +52,31 @@ export const BasketCard = ({ item, calcTotalCount }) => {
       </div>
       <div className={cl.right}>
         <div className={cl.select__size}>
-          <Select style={{ width: '220px' }}>
+          <Select
+            style={{ width: '220px' }}
+            onChange={(e) => {
+              dispatch(setSize({ id: item._id, size: e.target.value }));
+            }}
+          >
+            <option value={item.quantity}>Размер: {item.size}</option>
+
             {item.sizes.map((size) => {
-              return <option key={size}>Размер: {size}</option>;
+              return (
+                <option value={size} key={size}>
+                  Размер: {size}
+                </option>
+              );
             })}
           </Select>
           <Select
             style={{ width: '220px' }}
             onChange={(e) => {
-              // calcTotalCount(total);
               console.log(e.target.value);
-              dispatch(
-                setQuantity({
-                  _id: item._id,
-                  quantity: parseInt(e.target.value),
-                })
-              );
+
+              dispatch(setQuantity({ id: item._id, quantity: e.target.value }));
             }}
           >
+            <option value={item.quantity}>Количество: {item.quantity}</option>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => {
               return (
                 <option key={`q${i}`} value={i}>
@@ -77,11 +89,8 @@ export const BasketCard = ({ item, calcTotalCount }) => {
         <div
           className={cl.delete}
           onClick={() => {
-            const basket = localStorage.getItem('basket');
-            const newBasket = JSON.parse(basket).filter((i) => i !== item._id);
-            localStorage.setItem('basket', JSON.stringify(newBasket));
             setIsDeleted(true);
-            dispatch(deleteItem(item._id));
+            dispatch(addItemToBasket(item));
           }}
         >
           удалить X

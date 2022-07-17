@@ -116,6 +116,7 @@ export const Detail = () => {
                     </select>
                     <div className='button__group'>
                       <div className='btn add__to__favor'>В избранное</div>
+
                       <div className='btn add__to__cart'>
                         Добавить в корзину
                       </div>

@@ -7,6 +7,7 @@ import { Recent } from '../components/UI/Recent/Recent';
 import { ItemCard } from '../components/UI/ItemCard/ItemCard';
 import ServiceApi from '../api/ServiceApi';
 import { Pagination } from '../components/UI/Pagination/Pagination';
+import { Loader } from '../components/UI/Loader/Loader';
 
 export const Items = () => {
   const [items, setItems] = useState([]);
@@ -14,6 +15,8 @@ export const Items = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const [basketItems, setBasketItems] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const getAllBasketItems = async () => {
     const items = JSON.parse(localStorage.getItem('basket'));
@@ -41,9 +44,11 @@ export const Items = () => {
   };
 
   const loadData = async () => {
+    setIsLoading(true);
     const fetchedItems = await ServiceApi.getItems(page);
     setItems(fetchedItems.data);
     setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -75,9 +80,13 @@ export const Items = () => {
           </div>
         </div>
         <div className='items__list'>
-          {items.map((item) => (
-            <ItemCard key={item._id} item={item} addToBasket={addToBasket} />
-          ))}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            items.map((item) => (
+              <ItemCard key={item._id} item={item} addToBasket={addToBasket} />
+            ))
+          )}
         </div>
         <Pagination totalPages={totalPages} setPage={setPage} />
         {/* <Recent images={images} /> */}

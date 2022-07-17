@@ -11,11 +11,10 @@ import {
   setSize,
 } from '../../../rtk/toolkitReducer';
 
-export const BasketCard = ({ item, calcTotalCount }) => {
+export const BasketCard = ({ item }) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.toolkit.items);
   const router = useNavigate();
 
   return isDeleted ? null : (

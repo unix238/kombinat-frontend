@@ -4,19 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import { ShoppingCart } from '../Icons/ShoppingCart';
 import { ShareCard } from '../Icons/ShareCard';
 
-import { addItemToBasket } from '../../../rtk/toolkitReducer';
+import {
+  addItemToBasket,
+  addItemToFavorite,
+} from '../../../rtk/toolkitReducer';
 
 import cl from './ItemCard.module.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { Favorite } from '../Icons/Favorite';
 
 export const ItemCard = ({ item, style }) => {
   const items = useSelector((state) => state.toolkit.items);
+  const favorites = useSelector((state) => state.toolkit.favorite);
   const dispatch = useDispatch();
   const router = useNavigate();
 
   const [inBasket, setInBasket] = useState(false);
+  const [inFavorite, setInFavorite] = useState(false);
 
-  const check = () => {
+  const checkBasket = () => {
     if (items.filter((i) => i._id === item._id).length > 0) {
       setInBasket(true);
     } else {
@@ -24,19 +30,41 @@ export const ItemCard = ({ item, style }) => {
     }
   };
 
+  const checkFavorite = () => {
+    if (favorites.filter((i) => i._id === item._id).length > 0) {
+      setInFavorite(true);
+    } else {
+      setInFavorite(false);
+    }
+  };
+
   useEffect(() => {
-    check();
+    checkBasket();
+    checkFavorite();
   }, [items]);
 
   return (
     <div className={cl.item__card}>
-      <div
-        className={cl.item__image}
-        onClick={() => {
-          router(`/item/${item._id}`);
-        }}
-      >
-        <img src={item.images[0]} alt={item.name} />
+      <div className={cl.item__image}>
+        <div className={cl.fav__icon}>
+          <Favorite
+            isEmpty={true}
+            width={'24'}
+            height={'24'}
+            isRed={inFavorite ? true : false}
+            isCard={true}
+            onClick={() => {
+              dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
+            }}
+          />
+        </div>
+        <img
+          src={item.images[0]}
+          alt={item.name}
+          onClick={() => {
+            router(`/item/${item._id}`);
+          }}
+        />
       </div>
       <div className={cl.item__text}>
         <div className={cl.top}>

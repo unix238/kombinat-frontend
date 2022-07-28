@@ -2,13 +2,17 @@ import { createAction, createReducer } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
+  favorite: [],
 };
 
 export const setQuantity = createAction('SET_QUANTITY');
 export const setSize = createAction('SET_SIZE');
-
 export const addItemToBasket = createAction('ADD_ITEM_TO_BASKET');
 export const loadBasketItems = createAction('LOAD_BASKET_ITEMS');
+export const addItemToFavorite = createAction('ADD_ITEM_TO_FAVORITE');
+export const loadFavoriteItems = createAction('LOAD_FAVORITE_ITEMS');
+
+export const clearItems = createAction('CLEAR_ITEMS');
 
 const updateLocalStorage = (state) => {
   localStorage.removeItem('basket');
@@ -50,5 +54,26 @@ export default createReducer(initialState, {
       return item;
     });
     updateLocalStorage(state);
+  },
+  [clearItems]: (state) => {
+    state.items = [];
+    updateLocalStorage(state);
+  },
+  [addItemToFavorite]: (state, action) => {
+    if (state.favorite.find((item) => item._id === action.payload._id)) {
+      state.favorite = state.favorite.filter(
+        (item) => item._id !== action.payload._id
+      );
+    } else {
+      state.favorite = [...state.favorite, action.payload];
+    }
+    localStorage.removeItem('favorite');
+    localStorage.setItem('favorite', JSON.stringify(state.favorite));
+  },
+  [loadFavoriteItems]: (state) => {
+    const favoriteItems = JSON.parse(localStorage.getItem('favorite'));
+    if (favoriteItems) {
+      state.favorite = favoriteItems;
+    }
   },
 });

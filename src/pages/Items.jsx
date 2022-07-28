@@ -15,6 +15,7 @@ export const Items = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const [basketItems, setBasketItems] = useState([]);
+  const [favoriteItems, setFavoriteItems] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,21 +26,10 @@ export const Items = () => {
     }
   };
 
-  const addToBasket = (id) => {
-    const basket = JSON.parse(localStorage.getItem('basket'));
-    if (basket) {
-      if (basket.find((item) => item === id)) {
-        const newBasket = basket.filter((item) => item !== id);
-        localStorage.setItem('basket', JSON.stringify(newBasket));
-        setBasketItems(newBasket);
-      } else {
-        basket.push(id);
-        localStorage.setItem('basket', JSON.stringify(basket));
-        setBasketItems(basket);
-      }
-    } else {
-      localStorage.setItem('basket', JSON.stringify([id]));
-      setBasketItems([id]);
+  const getAllFavoriteItems = async () => {
+    const items = JSON.parse(localStorage.getItem('favorite'));
+    if (items) {
+      setFavoriteItems(items);
     }
   };
 
@@ -53,11 +43,14 @@ export const Items = () => {
 
   useEffect(() => {
     loadData();
+
     getAllBasketItems();
+    getAllFavoriteItems();
   }, []);
 
   useEffect(() => {
     loadData();
+    console.log(items);
   }, [page]);
 
   return (
@@ -83,9 +76,7 @@ export const Items = () => {
           {isLoading ? (
             <Loader />
           ) : (
-            items.map((item) => (
-              <ItemCard key={item._id} item={item} addToBasket={addToBasket} />
-            ))
+            items.map((item) => <ItemCard key={item._id} item={item} />)
           )}
         </div>
         <Pagination totalPages={totalPages} setPage={setPage} />

@@ -6,7 +6,7 @@ import { Footer } from './UI/Footer/Footer';
 import { ProtectedRoute } from './ProtectedRoute';
 import { Admin } from '../pages/Admin';
 
-import { loadBasketItems } from '../rtk/toolkitReducer';
+import { loadBasketItems, loadFavoriteItems } from '../rtk/toolkitReducer';
 
 import { useDispatch } from 'react-redux';
 
@@ -15,6 +15,7 @@ export const AppRouter = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadBasketItems());
+    dispatch(loadFavoriteItems());
   });
 
   return (

@@ -1,15 +1,12 @@
-import React from 'react';
-import { Button } from '../Button/Button';
-import cl from './Basket.module.css';
-import { BasketCard } from '../BasketCard/BasketCard';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { Loader } from '../Loader/Loader';
-
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { setItem, clearItems, setLocalItem } from '../../../rtk/toolkitReducer';
+import { addItemToBasket, clearItems } from '../../../rtk/toolkitReducer';
+import PaymentApi from '../../../api/PaymentApi';
 
-import { addItemToBasket } from '../../../rtk/toolkitReducer';
+import cl from './Basket.module.css';
+import { Button } from '../Button/Button';
+import { BasketCard } from '../BasketCard/BasketCard';
+import { Loader } from '../Loader/Loader';
 
 export const Basket = () => {
   const [basketItems, setBasketItems] = useState([]);
@@ -18,21 +15,27 @@ export const Basket = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.toolkit.items);
 
-  const loadItems = async () => {
-    // const items = JSON.parse(localStorage.getItem('basket'));
-    // // dispatch(clearItems());
-    // if (items) {
-    //   items.map(async (id) => {
-    //     setIsLoading(true);
-    //     const item = await ServiceApi.getItemByID(id);
-    //     setBasketItems((prev) => [...prev, item]);
-    //     // dispatch(setItem({ ...item, quantity: 1 }));
-    //   });
-    // }
-    // setIsLoading(false);
-  };
-
   const [totalCount, setTotalCount] = useState(0);
+
+  const makePayment = async () => {
+    const orderItems = items.map((item) => {
+      return {
+        item: item._id,
+        quantity: item.quantity,
+        size: item.size,
+      };
+    });
+
+    setIsLoading(true);
+    const response = await PaymentApi.addOrder(orderItems);
+    if (response.status === 200) {
+      dispatch(clearItems());
+      setBasketItems([]);
+      setTotalCount(0);
+      setIsLoading(false);
+      alert(`Payment successful id: ${response.data.order._id}`);
+    }
+  };
 
   useEffect(() => {
     countPrice();
@@ -79,7 +82,11 @@ export const Basket = () => {
             {totalCount + 1000} ₸
           </div>
         </div>
-        <Button text={'Перейти к опалте'} style={{ width: '220px' }} />
+        <Button
+          text={'Перейти к опалте'}
+          onClick={makePayment}
+          style={{ width: '220px' }}
+        />
       </div>
     </div>
   );

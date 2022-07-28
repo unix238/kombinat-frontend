@@ -5,33 +5,24 @@ import { ItemCard } from '../ItemCard/ItemCard';
 import cl from './WishList.module.css';
 import { Loader } from '../Loader/Loader';
 import ServiceApi from '../../../api/ServiceApi';
+import { useSelector } from 'react-redux';
 
 export const WishList = () => {
   const [wishItems, setWishItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const loadItems = async () => {
-    const items = JSON.parse(localStorage.getItem('basket'));
-    console.log(items);
-    if (items) {
-      items.map(async (id) => {
-        setIsLoading(true);
-        const item = await ServiceApi.getItemByID(id);
-        setWishItems((prev) => [...prev, item]);
-      });
-    }
-    setIsLoading(false);
-  };
+  const favorites = useSelector((state) => state.toolkit.favorite);
 
   useEffect(() => {
-    loadItems();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
 
   return (
     <div>
       <div className='items'>
         {!isLoading ? (
-          wishItems.map((item) => {
+          favorites.map((item) => {
             return <ItemCard key={`${item._id}ws`} item={item} />;
           })
         ) : (

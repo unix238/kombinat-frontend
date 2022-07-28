@@ -9,11 +9,18 @@ import { Favorite } from '../Icons/Favorite';
 import { ShoppingBag } from '../Icons/ShoppingBag';
 import { Account } from '../Icons/Account';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import ServiceApi from '../../../api/ServiceApi';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useNavigate();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [router]);
+
   const [forMens, setForMens] = useState([
     {
       categories: [

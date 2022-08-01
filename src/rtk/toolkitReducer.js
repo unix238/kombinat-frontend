@@ -11,12 +11,11 @@ export const addItemToBasket = createAction('ADD_ITEM_TO_BASKET');
 export const loadBasketItems = createAction('LOAD_BASKET_ITEMS');
 export const addItemToFavorite = createAction('ADD_ITEM_TO_FAVORITE');
 export const loadFavoriteItems = createAction('LOAD_FAVORITE_ITEMS');
-
 export const clearItems = createAction('CLEAR_ITEMS');
 
-const updateLocalStorage = (state) => {
-  localStorage.removeItem('basket');
-  localStorage.setItem('basket', JSON.stringify(state.items));
+const updateLocalStorage = (localStorageItem, stateItem) => {
+  localStorage.removeItem(localStorageItem);
+  localStorage.setItem(localStorageItem, JSON.stringify(stateItem));
 };
 
 export default createReducer(initialState, {
@@ -28,8 +27,7 @@ export default createReducer(initialState, {
     } else {
       state.items = [...state.items, action.payload];
     }
-    localStorage.removeItem('basket');
-    localStorage.setItem('basket', JSON.stringify(state.items));
+    updateLocalStorage('basket', state.items);
   },
   [loadBasketItems]: (state) => {
     const basket = JSON.parse(localStorage.getItem('basket'));
@@ -44,7 +42,7 @@ export default createReducer(initialState, {
       }
       return item;
     });
-    updateLocalStorage(state);
+    updateLocalStorage('basket', state.items);
   },
   [setSize]: (state, action) => {
     state.items = state.items.map((item) => {
@@ -53,11 +51,11 @@ export default createReducer(initialState, {
       }
       return item;
     });
-    updateLocalStorage(state);
+    updateLocalStorage('basket', state.items);
   },
   [clearItems]: (state) => {
     state.items = [];
-    updateLocalStorage(state);
+    updateLocalStorage('basket', state.items);
   },
   [addItemToFavorite]: (state, action) => {
     if (state.favorite.find((item) => item._id === action.payload._id)) {
@@ -67,8 +65,7 @@ export default createReducer(initialState, {
     } else {
       state.favorite = [...state.favorite, action.payload];
     }
-    localStorage.removeItem('favorite');
-    localStorage.setItem('favorite', JSON.stringify(state.favorite));
+    updateLocalStorage('favorite', state.favorite);
   },
   [loadFavoriteItems]: (state) => {
     const favoriteItems = JSON.parse(localStorage.getItem('favorite'));

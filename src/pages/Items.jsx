@@ -96,8 +96,8 @@ export const Items = () => {
           )}
         </div>
         <Pagination totalPages={totalPages} setPage={setPage} />
-        {/* <Recent images={images} /> */}
       </div>
+      <Recent />
     </div>
   );
 };

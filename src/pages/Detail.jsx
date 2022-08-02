@@ -5,7 +5,8 @@ import { Help } from '../components/UI/Icons/Help';
 import { Recent } from '../components/UI/Recent/Recent';
 import ServiceApi from '../api/ServiceApi';
 import { Loader } from '../components/UI/Loader/Loader';
-
+import { useDispatch } from 'react-redux';
+import { addRecentItem } from '../rtk/toolkitReducer';
 import { useNavigate } from 'react-router-dom';
 
 export const Detail = () => {
@@ -13,6 +14,8 @@ export const Detail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
   const [recent, setRecent] = useState([]);
+
+  const dispatch = useDispatch();
 
   const router = useNavigate();
 
@@ -63,7 +66,8 @@ export const Detail = () => {
 
   useEffect(() => {
     if (item != null) {
-      addRecent();
+      // addRecent();
+      dispatch(addRecentItem(item));
     }
   }, [item]);
 

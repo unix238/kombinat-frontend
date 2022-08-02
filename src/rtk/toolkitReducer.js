@@ -3,6 +3,7 @@ import { createAction, createReducer } from '@reduxjs/toolkit';
 const initialState = {
   items: [],
   favorite: [],
+  recent: [],
 };
 
 export const setQuantity = createAction('SET_QUANTITY');
@@ -12,6 +13,8 @@ export const loadBasketItems = createAction('LOAD_BASKET_ITEMS');
 export const addItemToFavorite = createAction('ADD_ITEM_TO_FAVORITE');
 export const loadFavoriteItems = createAction('LOAD_FAVORITE_ITEMS');
 export const clearItems = createAction('CLEAR_ITEMS');
+export const loadRecentItems = createAction('LOAD_RECENT_ITEMS');
+export const addRecentItem = createAction('ADD_RECENT_ITEM');
 
 const updateLocalStorage = (localStorageItem, stateItem) => {
   localStorage.removeItem(localStorageItem);
@@ -72,5 +75,23 @@ export default createReducer(initialState, {
     if (favoriteItems) {
       state.favorite = favoriteItems;
     }
+  },
+  [loadRecentItems]: (state) => {
+    const recentItems = JSON.parse(localStorage.getItem('recent'));
+    if (recentItems) {
+      state.recent = recentItems;
+    }
+  },
+  [addRecentItem]: (state, action) => {
+    if (state.recent.filter((el) => el._id === action.payload._id).length > 0) {
+      return;
+    }
+    if (state.recent.length > 3) {
+      state.recent.unshift(action.payload);
+      state.recent.pop();
+    } else {
+      state.recent.unshift(action.payload);
+    }
+    updateLocalStorage('recent', state.recent);
   },
 });

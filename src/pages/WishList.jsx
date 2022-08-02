@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Recent } from '../components/UI/Recent/Recent';
 import { WishList as WS } from '../components/UI/WishList/WishList';
 
 export const WishList = () => {
@@ -27,6 +28,7 @@ export const WishList = () => {
           <WS />
         </div>
       </div>
+      <Recent />
     </div>
   );
 };

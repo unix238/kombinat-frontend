@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import cl from './Recent.module.css';
 import { ItemCard } from '../ItemCard/ItemCard';
+import { useSelector } from 'react-redux';
 
-export const Recent = ({ cards }) => {
+export const Recent = () => {
+  const cards = useSelector((state) => state.toolkit.recent);
+
   return (
     <div className={cl.recently}>
       <div className='wrapper'>

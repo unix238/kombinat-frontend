@@ -3,6 +3,7 @@ import { Basket as BS } from '../components/UI/Basket/Basket';
 import { useSelector, useDispatch } from 'react-redux';
 
 import '../style/basket.css';
+import { Recent } from '../components/UI/Recent/Recent';
 
 export const Basket = () => {
   const [currentPage, setCurrentPage] = useState('basket');
@@ -53,6 +54,7 @@ export const Basket = () => {
           <BS />
         </div>
       </div>
+      <Recent />
     </div>
   );
 };

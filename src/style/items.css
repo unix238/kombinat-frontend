@@ -1,4 +1,4 @@
-@import '~react-image-gallery/styles/css/image-gallery.css';
+/* @import '~react-image-gallery/styles/css/image-gallery.css'; */
 
 .options {
   display: flex;
@@ -14,7 +14,7 @@
 
 .filters {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .filters__nav {

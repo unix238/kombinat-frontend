@@ -33,4 +33,14 @@ export default class ServiceApi {
     const req = await axios.get(`${link}items/get/${id}`);
     return req.data;
   }
+
+  static async getAllItemsByTag(id, page) {
+    const req = await axios.get(`${link}items/get/tag/${id}?page=${page}`);
+    return req;
+  }
+
+  static async getAllItemsByCategory(id) {
+    const req = await axios.get(`${link}items/get/category/${id}`);
+    return req.data;
+  }
 }

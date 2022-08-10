@@ -10,7 +10,7 @@ export default class ServiceApi {
   static async login(username, password) {
     const req = await axios.post(`${link}auth/login`, { username, password });
     if (req.status == 200) {
-      return true;
+      return req.data;
     }
     return false;
   }

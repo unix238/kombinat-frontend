@@ -6,12 +6,49 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/UI/Button/Button';
 import { Facebook } from '../components/UI/Icons/Facebook';
 import { useState } from 'react';
+import ServiceApi from '../api/ServiceApi';
 
 export const Login = () => {
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [newPhone, setNewPhone] = useState('');
+  const [newName, setNewName] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+
+  const [choice, setChoice] = useState('email');
+
   const [currentPage, setCurrentPage] = useState('login');
   const changeState = (state) => {
     setCurrentPage(state);
   };
+
+  const LogIn = async () => {
+    if (login.length < 0) {
+      setError('Неверный номер телефона или пароль');
+      return;
+    }
+    if (password.length < 0) {
+      setError('Неверный номер телефона или пароль');
+      return;
+    }
+    try {
+      const req = await ServiceApi.login(login, password);
+      if (req) {
+        setError('');
+        setIsLoading(false);
+        setLogin('');
+        setPassword('');
+        localStorage.setItem('token', req.token);
+        window.location.href = '/';
+      }
+    } catch (e) {
+      setError('Неверный номер телефона или пароль');
+    }
+  };
+
   return (
     <div className='login'>
       <div className='headerTop'>
@@ -67,6 +104,10 @@ export const Login = () => {
                     className='logininput'
                     id='phone'
                     placeholder='+7(___)-___-__-__'
+                    value={login}
+                    onChange={(e) => {
+                      setLogin(e.target.value);
+                    }}
                   />
                 </div>
                 <div className='form__input'>
@@ -75,13 +116,19 @@ export const Login = () => {
                     type='password'
                     className='logininput'
                     id='password'
-                    placeholder='Qqwerty1!'
+                    placeholder='password'
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                    value={password}
                   />
                 </div>
+                <div className='error'>{error}</div>
                 <div className='submitLogin'>
                   <Button
                     style={{ width: '100%', height: 40 }}
                     text='Войти в аккаунт'
+                    onClick={LogIn}
                   />
                 </div>
               </div>
@@ -97,6 +144,10 @@ export const Login = () => {
                       className='logininput'
                       id='phone'
                       placeholder=' '
+                      value={newName}
+                      onChange={(e) => {
+                        setNewName(e.target.value);
+                      }}
                     />
                   </div>
                   <div className='form__input'>
@@ -104,8 +155,10 @@ export const Login = () => {
                     <input
                       type='text'
                       className='logininput'
-                      id='password'
                       placeholder='example@gmail.com'
+                      onChange={(e) => {
+                        setNewEmail(e.target.value);
+                      }}
                     />
                   </div>
                   <div className='input__text'>Номер Телефона</div>
@@ -114,12 +167,21 @@ export const Login = () => {
                     className='logininput'
                     id='phone'
                     placeholder='+7(___)-___-__-__'
+                    value={newPhone}
+                    onChange={(e) => {
+                      setNewPhone(e.target.value);
+                    }}
                   />
                   <div className='chooseConfirmation'>
                     <div className='radiobuttons'>
                       <div className='radiobutton'>
                         <input
                           type='radio'
+                          value={'email'}
+                          checked={choice === 'email'}
+                          onChange={(e) => {
+                            setChoice(e.target.value);
+                          }}
                           name='confirmation'
                           id='confirmation1'
                         />
@@ -130,6 +192,11 @@ export const Login = () => {
                       <div className='radiobutton'>
                         <input
                           type='radio'
+                          value={'sms'}
+                          checked={choice === 'sms'}
+                          onChange={(e) => {
+                            setChoice(e.target.value);
+                          }}
                           name='confirmation'
                           id='confirmation2'
                         />

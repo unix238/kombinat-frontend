@@ -8,7 +8,8 @@ import { ItemCard } from '../components/UI/ItemCard/ItemCard';
 import ServiceApi from '../api/ServiceApi';
 import { Pagination } from '../components/UI/Pagination/Pagination';
 import { Loader } from '../components/UI/Loader/Loader';
-
+import { Header } from '../components/UI/Header/Header';
+import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 export const Items = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -22,7 +23,8 @@ export const Items = () => {
   const [tags, setTags] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [filters, setFilters] = useState({ tags: [], categories: [] });
+
+  const filters = [];
 
   const getAllBasketItems = async () => {
     const items = JSON.parse(localStorage.getItem('basket'));
@@ -50,6 +52,36 @@ export const Items = () => {
     setIsLoading(false);
   };
 
+  const addFilter = (filter) => {
+    let isFilterUnique = true;
+    filters.forEach((item) => {
+      if (item.tags === filter.tags) {
+        isFilterUnique = false;
+      }
+    });
+
+    if (isFilterUnique) {
+      filters.push(filter);
+    } else {
+      filters.forEach((item, index) => {
+        if (item.tags === filter.tags) {
+          filters.splice(index, 1);
+        }
+      });
+    }
+
+    setIsFiltered(true);
+    loadFilteredItems();
+  };
+
+  const loadFilteredItems = async () => {
+    setIsLoading(true);
+    const fetchedItems = await ServiceApi.getAllItemsByTags(filters, page);
+    setFilteredItems(fetchedItems.data);
+    setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     loadData();
     getAllBasketItems();
@@ -62,6 +94,7 @@ export const Items = () => {
 
   return (
     <div>
+      <Header />
       <div className='wrapper'>
         <div className='options'>
           <div className='filters'>
@@ -73,7 +106,7 @@ export const Items = () => {
               {tags.map((tag) => (
                 <div
                   className='filter__item'
-                  // onClick={() => addFilter({ tags: tag._id })}
+                  onClick={() => addFilter({ tags: tag._id })}
                   key={tag._id}
                 >
                   {tag.title}
@@ -98,6 +131,7 @@ export const Items = () => {
         <Pagination totalPages={totalPages} setPage={setPage} />
       </div>
       <Recent />
+      <ContactForm />
     </div>
   );
 };

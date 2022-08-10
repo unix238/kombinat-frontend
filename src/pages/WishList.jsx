@@ -1,13 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Recent } from '../components/UI/Recent/Recent';
+import { Header } from '../components/UI/Header/Header';
 import { WishList as WS } from '../components/UI/WishList/WishList';
+import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 
 export const WishList = () => {
   const favorites = useSelector((state) => state.toolkit.favorite);
 
   return (
     <div>
+      <Header />
+
       <div className='wrapper'>
         <div className='basket__nav'>
           <div className='basket__nav__links'>
@@ -29,6 +33,7 @@ export const WishList = () => {
         </div>
       </div>
       <Recent />
+      <ContactForm />
     </div>
   );
 };

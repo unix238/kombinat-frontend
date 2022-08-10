@@ -8,6 +8,8 @@ import { Loader } from '../components/UI/Loader/Loader';
 import { useDispatch } from 'react-redux';
 import { addRecentItem } from '../rtk/toolkitReducer';
 import { useNavigate } from 'react-router-dom';
+import { Header } from '../components/UI/Header/Header';
+import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 
 export const Detail = () => {
   const [item, setItem] = useState(null);
@@ -33,29 +35,6 @@ export const Detail = () => {
     setImages(temp);
   };
 
-  const addRecent = () => {
-    const recent = JSON.parse(localStorage.getItem('recent'));
-    if (!recent) {
-      localStorage.setItem('recent', JSON.stringify([item]));
-      setRecent([item]);
-      return;
-    }
-    if (recent.map((item) => item._id).includes(item._id)) {
-      setRecent(recent);
-      return;
-    }
-    if (recent.length < 4) {
-      recent.unshift(item);
-      localStorage.setItem('recent', JSON.stringify(recent));
-      setRecent(recent);
-      return;
-    }
-    recent.pop();
-    recent.unshift(item);
-    localStorage.setItem('recent', JSON.stringify(recent));
-    setRecent(recent);
-  };
-
   useEffect(() => {
     loadData();
   }, []);
@@ -66,13 +45,13 @@ export const Detail = () => {
 
   useEffect(() => {
     if (item != null) {
-      // addRecent();
       dispatch(addRecentItem(item));
     }
   }, [item]);
 
   return !isLoading ? (
     <>
+      <Header />
       <div className='detail'>
         <div className='wrapper'>
           <div className='detail'>
@@ -154,8 +133,13 @@ export const Detail = () => {
       <div className='recent'>
         <Recent cards={recent} />
       </div>
+      <ContactForm />
     </>
   ) : (
-    <Loader />
+    <>
+      <Header />
+      <Loader />
+      <ContactForm />
+    </>
   );
 };

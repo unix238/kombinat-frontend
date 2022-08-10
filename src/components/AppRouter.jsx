@@ -25,7 +25,6 @@ export const AppRouter = () => {
 
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
         {routes.map((route) => (
           <Route

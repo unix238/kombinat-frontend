@@ -53,7 +53,7 @@ export const ItemCard = ({ item, style }) => {
             height={'24'}
             isRed={inFavorite ? true : false}
             isCard={true}
-            onClick={() => {
+            addToFavorite={() => {
               dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
             }}
           />

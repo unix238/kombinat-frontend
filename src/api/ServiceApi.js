@@ -34,9 +34,12 @@ export default class ServiceApi {
     return req.data;
   }
 
-  static async getAllItemsByTag(id, page) {
-    const req = await axios.get(`${link}items/get/tag/${id}?page=${page}`);
-    return req;
+  static async getAllItemsByTags(ids, page) {
+    const tags = ids.map((i) => i.tags);
+    const req = await axios.get(
+      `${link}items/get/tagss?tags=${tags}&page=${page}`
+    );
+    return req.data;
   }
 
   static async getAllItemsByCategory(id) {

@@ -3,6 +3,13 @@
   src: local('Roboto Flex'), url('../fonts/robotoFlex.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Roboto Flex';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/robotoFlex.ttf');
+}
+
 * {
   margin: 0;
   padding: 0;

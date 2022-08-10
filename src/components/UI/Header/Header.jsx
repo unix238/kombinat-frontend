@@ -173,7 +173,9 @@ export const Header = () => {
                 </Link>
               </div>
               <div className={cl.link}>
-                <Account width={'25'} height={'25'} />
+                <Link to='/login'>
+                  <Account width={'25'} height={'25'} />
+                </Link>
               </div>
             </div>
           </div>
@@ -247,19 +249,29 @@ export const Header = () => {
                   <div className={cl.dropDownMenuCard}>
                     <div className={cl.cardTitle}>Одежда</div>
                     {card.categories.map((item) => (
-                      <div className={cl.cardLink}>{item.title}</div>
+                      <div className={cl.cardLink}>
+                        <Link to='/items'>{item.title}</Link>
+                      </div>
                     ))}
                   </div>
                   <div className={cl.dropDownMenuCard}>
                     <div className={cl.cardTitle}>Стиль</div>
                     {card.style.map((item) => (
-                      <div className={cl.cardLink}>{item.title}</div>
+                      <div className={cl.cardLink}>
+                        <div className={cl.cardLink}>
+                          <Link to='/items'>{item.title}</Link>
+                        </div>
+                      </div>
                     ))}
                   </div>
                   <div className={cl.dropDownMenuCard}>
                     <div className={cl.cardTitle}>ПОВОД</div>
                     {card.ourChoice.map((item) => (
-                      <div className={cl.cardLink}>{item.title}</div>
+                      <div className={cl.cardLink}>
+                        <div className={cl.cardLink}>
+                          <Link to='/items'>{item.title}</Link>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>

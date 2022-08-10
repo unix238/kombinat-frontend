@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import '../style/basket.css';
 import { Recent } from '../components/UI/Recent/Recent';
+import { Header } from '../components/UI/Header/Header';
+import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 
 export const Basket = () => {
   const [currentPage, setCurrentPage] = useState('basket');
@@ -14,7 +16,11 @@ export const Basket = () => {
 
   const allItems = () => {
     const basket = JSON.parse(localStorage.getItem('basket'));
-    setBasketItems(basket.length);
+    if (basket) {
+      setBasketItems(basket.length);
+    } else {
+      setBasketItems(0);
+    }
   };
 
   useEffect(() => {
@@ -22,39 +28,44 @@ export const Basket = () => {
   }, []);
 
   return (
-    <div className='basket'>
-      <div className='wrapper'>
-        <div className='basket__nav'>
-          <div className='basket__nav__links'>
-            <div
-              className={
-                currentPage === 'basket'
-                  ? 'basket__nav__link__div basket__active'
-                  : 'basket__nav__link__div'
-              }
-            >
-              <div className='basket__nav__link basket__nav__subtitle'>
-                Всего товаров: {basketItems}
-              </div>
+    <>
+      <Header />
+
+      <div className='basket'>
+        <div className='wrapper'>
+          <div className='basket__nav'>
+            <div className='basket__nav__links'>
               <div
-                className={'basket__nav__link basket__nav__title'}
-                onClick={() => {
-                  setCurrentPage('basket');
-                }}
+                className={
+                  currentPage === 'basket'
+                    ? 'basket__nav__link__div basket__active'
+                    : 'basket__nav__link__div'
+                }
               >
-                Корзина
-              </div>
-              <div className='basket__nav__link basket__nav__subtitle'>
-                Продолжить покупки
+                <div className='basket__nav__link basket__nav__subtitle'>
+                  Всего товаров: {basketItems}
+                </div>
+                <div
+                  className={'basket__nav__link basket__nav__title'}
+                  onClick={() => {
+                    setCurrentPage('basket');
+                  }}
+                >
+                  Корзина
+                </div>
+                <div className='basket__nav__link basket__nav__subtitle'>
+                  Продолжить покупки
+                </div>
               </div>
             </div>
           </div>
+          <div className='basket__main'>
+            <BS />
+          </div>
         </div>
-        <div className='basket__main'>
-          <BS />
-        </div>
+        <Recent />
       </div>
-      <Recent />
-    </div>
+      <ContactForm />
+    </>
   );
 };

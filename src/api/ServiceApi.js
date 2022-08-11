@@ -15,6 +15,15 @@ export default class ServiceApi {
     return false;
   }
 
+  static async register(user) {
+    try {
+      const req = await axios.post(`${link}auth/register`, user);
+      return req;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   static async checkToken(token) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     const req = await axios.post(`${link}auth/token-verify`);

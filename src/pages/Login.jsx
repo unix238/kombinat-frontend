@@ -7,11 +7,13 @@ import { Button } from '../components/UI/Button/Button';
 import { Facebook } from '../components/UI/Icons/Facebook';
 import { useState } from 'react';
 import ServiceApi from '../api/ServiceApi';
+import { validateEmail, validatePhone } from '../utils/validate';
 
 export const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [regError, setRegError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [newPhone, setNewPhone] = useState('');
@@ -49,6 +51,14 @@ export const Login = () => {
     }
   };
 
+  const register = () => {
+    if (validateEmail(newEmail) && validatePhone(newPhone)) {
+      setCurrentPage('activation');
+    } else {
+      setRegError('Проверьте правильность введенных данных');
+    }
+  };
+
   return (
     <div className='login'>
       <div className='headerTop'>
@@ -83,7 +93,7 @@ export const Login = () => {
             </div>
             <div
               className={
-                currentPage === 'register'
+                currentPage === 'register' || currentPage === 'activation'
                   ? 'register__choice active__choice'
                   : 'register__choice'
               }
@@ -116,7 +126,7 @@ export const Login = () => {
                     type='password'
                     className='logininput'
                     id='password'
-                    placeholder='password'
+                    placeholder='Пароль'
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
@@ -143,7 +153,7 @@ export const Login = () => {
                       type='text'
                       className='logininput'
                       id='phone'
-                      placeholder=' '
+                      placeholder='Имя'
                       value={newName}
                       onChange={(e) => {
                         setNewName(e.target.value);
@@ -206,15 +216,33 @@ export const Login = () => {
                       </div>
                     </div>
                   </div>
+                  <div className='error'>{regError}</div>
                   <div className='submitLogin'>
                     <Button
                       style={{ width: '100%', height: 40 }}
                       text='Получить код подтверждения'
+                      onClick={register}
                     />
                   </div>
                 </div>
               </div>
             </>
+          ) : currentPage === 'activation' ? (
+            <div className='activation'>
+              <div className='activationText'>
+                Код был отправлен на номер {newPhone}. Чтобы подтвердить свою
+                личность, введите его:
+              </div>
+              <div className='activationCode'>
+                <input maxlength='4' id='activation' />
+              </div>
+              <div className='sendAgain'>Отправить повторно через 00:58</div>
+              <Button
+                style={{ width: '100%', height: 40 }}
+                text='Продолжить'
+                onClick={register}
+              />
+            </div>
           ) : (
             <></>
           )}

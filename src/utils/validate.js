@@ -1,5 +1,5 @@
 export const validatePhone = (phone) => {
-  const regex = /^[0-9]{10}$/;
+  const regex = /^[0-9]{11}$/;
   return regex.test(phone);
 };
 

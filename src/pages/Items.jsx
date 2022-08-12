@@ -11,13 +11,14 @@ import { Loader } from '../components/UI/Loader/Loader';
 import { Header } from '../components/UI/Header/Header';
 import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 import { Button } from '../components/UI/Button/Button';
+
 export const Items = () => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isFilterOpenned, setIsFilterOpenned] = useState(false);
-  const [isSortOpenned, setIsSortOpenned] = useState(true);
+  const [isSortOpenned, setIsSortOpenned] = useState(false);
 
   const [isFiltered, setIsFiltered] = useState(false);
 

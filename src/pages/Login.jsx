@@ -11,21 +11,32 @@ import { validateEmail, validatePhone } from '../utils/validate';
 
 export const Login = () => {
   const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [regError, setRegError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [activationCode, setActivationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [newPhone, setNewPhone] = useState('');
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password1, setPassword1] = useState('');
 
   const [choice, setChoice] = useState('email');
 
   const [currentPage, setCurrentPage] = useState('login');
   const changeState = (state) => {
     setCurrentPage(state);
+  };
+
+  const handlePassword = (e, set) => {
+    set(e.target.value);
+    if (password !== password1) {
+      setPasswordError('Пароли не совпадают');
+    } else {
+      setPasswordError('');
+    }
   };
 
   const LogIn = async () => {
@@ -97,6 +108,17 @@ export const Login = () => {
       }
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const continueRegistration = async () => {
+    const req = await ServiceApi.continueRegistration({
+      email: newEmail,
+      password,
+    });
+    if (req.status === 200) {
+      setCurrentPage('login');
+      console.log('REGISTER SUCCESS');
     }
   };
 
@@ -292,7 +314,48 @@ export const Login = () => {
               />
             </div>
           ) : currentPage === 'password' ? (
-            <></>
+            <div className='password'>
+              <div className='login__form__form'>
+                <div className='form__inputs'>
+                  <div className='form__input'>
+                    <div className='input__text'>Придумайте пароль</div>
+                    <input
+                      type='password'
+                      className='logininput'
+                      id='password'
+                      placeholder='••••••••••••'
+                      value={password}
+                      onChange={(e) => {
+                        handlePassword(e, setPassword);
+                      }}
+                    />
+                  </div>
+                  <div className='form__input'>
+                    <div className='input__text'>Повторите пароль</div>
+                    <input
+                      type='password'
+                      className='logininput'
+                      id='phone'
+                      placeholder='••••••••••••'
+                      value={password1}
+                      onChange={(e) => {
+                        handlePassword(e, setPassword1);
+                      }}
+                    />
+                  </div>
+                  <div className='error'>
+                    {passwordError ? passwordError : ''}
+                  </div>
+                  <div className='submitLogin'>
+                    <Button
+                      style={{ width: '100%', height: 40 }}
+                      text='Создать аккаунт'
+                      onClick={continueRegistration}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           ) : (
             <></>
           )}

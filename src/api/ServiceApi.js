@@ -24,6 +24,15 @@ export default class ServiceApi {
     }
   }
 
+  static async continueRegistration(user) {
+    try {
+      const req = await axios.post(`${link}auth/continue-registration`, user);
+      return req;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   static async checkToken(token) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     const req = await axios.post(`${link}auth/token-verify`);
@@ -31,6 +40,25 @@ export default class ServiceApi {
       return req.data;
     }
     return false;
+  }
+
+  static async sendActivationCode(email) {
+    try {
+      const req = await axios.post(`${link}auth/send-code`, { email });
+      return req;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  static async activateAccount(data) {
+    try {
+      const req = await axios.post(`${link}auth/check-activation-code`, data);
+      return req;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   }
 
   static async getItems(page, limit = 12) {

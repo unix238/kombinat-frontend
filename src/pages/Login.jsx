@@ -14,6 +14,7 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [regError, setRegError] = useState('');
+  const [activationCode, setActivationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [newPhone, setNewPhone] = useState('');
@@ -51,11 +52,51 @@ export const Login = () => {
     }
   };
 
-  const register = () => {
+  const register = async () => {
     if (validateEmail(newEmail) && validatePhone(newPhone)) {
       setCurrentPage('activation');
+      const user = {
+        phone: newPhone,
+        name: newName,
+        email: newEmail,
+      };
+      const req = await ServiceApi.register(user);
+      if (req) {
+        if (req.status == 205) {
+          const activationMessageRequest = await ServiceApi.sendActivationCode(
+            newEmail
+          );
+          if (activationMessageRequest) {
+            if (activationMessageRequest.status === 200) {
+              console.log('Code sent');
+            }
+          }
+        }
+        if (req.status == 200) {
+          const activationMessageRequest = await ServiceApi.sendActivationCode(
+            newEmail
+          );
+          if (activationMessageRequest.status === 200) {
+            console.log('Code sent');
+          }
+        }
+      }
     } else {
       setRegError('Проверьте правильность введенных данных');
+    }
+  };
+
+  const accountActivationHandler = async () => {
+    try {
+      const res = await ServiceApi.activateAccount({
+        activationCode,
+        email: newEmail,
+      });
+      if (res.status === 200) {
+        setCurrentPage('password');
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -234,15 +275,24 @@ export const Login = () => {
                 личность, введите его:
               </div>
               <div className='activationCode'>
-                <input maxlength='4' id='activation' />
+                <input
+                  maxLength='4'
+                  id='activation'
+                  value={activationCode}
+                  onChange={(e) => {
+                    setActivationCode(e.target.value);
+                  }}
+                />
               </div>
               <div className='sendAgain'>Отправить повторно через 00:58</div>
               <Button
                 style={{ width: '100%', height: 40 }}
                 text='Продолжить'
-                onClick={register}
+                onClick={accountActivationHandler}
               />
             </div>
+          ) : currentPage === 'password' ? (
+            <></>
           ) : (
             <></>
           )}

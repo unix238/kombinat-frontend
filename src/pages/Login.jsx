@@ -11,6 +11,7 @@ import { validateEmail, validatePhone } from '../utils/validate';
 
 export const Login = () => {
   const [login, setLogin] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [error, setError] = useState('');
   const [regError, setRegError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -44,12 +45,12 @@ export const Login = () => {
       setError('Неверный номер телефона или пароль');
       return;
     }
-    if (password.length < 0) {
+    if (loginPassword.length < 0) {
       setError('Неверный номер телефона или пароль');
       return;
     }
     try {
-      const req = await ServiceApi.login(login, password);
+      const req = await ServiceApi.login(login, loginPassword);
       if (req) {
         setError('');
         setIsLoading(false);
@@ -191,9 +192,9 @@ export const Login = () => {
                     id='password'
                     placeholder='Пароль'
                     onChange={(e) => {
-                      setPassword(e.target.value);
+                      setLoginPassword(e.target.value);
                     }}
-                    value={password}
+                    value={loginPassword}
                   />
                 </div>
                 <div className='error'>{error}</div>

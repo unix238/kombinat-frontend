@@ -7,12 +7,15 @@ export default class ServiceApi {
     const req = await axios.get(`${link}news/get?page=${page}&limit=${limit}`);
     return req.data;
   }
-  static async login(username, password) {
-    const req = await axios.post(`${link}auth/login`, { username, password });
+  static async login(email, password) {
+    const req = await axios.post(`${link}auth/login`, { email, password });
     if (req.status == 200) {
+      console.log('LOGGED IN');
       return req.data;
+    } else {
+      localStorage.removeItem('token');
+      return false;
     }
-    return false;
   }
 
   static async register(user) {

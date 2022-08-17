@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { ArrowRight } from '../components/UI/Icons/ArrowRight';
 
@@ -28,6 +29,7 @@ export const Items = (props) => {
   const [brands, setBrands] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   const [filters, setFilters] = useState(
     props.filters || {
@@ -64,6 +66,11 @@ export const Items = (props) => {
 
   const loadData = async () => {
     setIsLoading(true);
+    console.log(location);
+    if (location.state) {
+      addFilter(location.state.filterName, location.state.filterValue);
+    }
+
     const fetchedTags = await ServiceApi.getTags();
     setTags(fetchedTags);
     const fetcgedCategories = await ServiceApi.getCategories();

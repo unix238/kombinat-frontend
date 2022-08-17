@@ -9,22 +9,19 @@ import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 
 export const Basket = () => {
   const [currentPage, setCurrentPage] = useState('basket');
-  const [basketItems, setBasketItems] = useState(0);
+  const [basketItems, setBasketItems] = useState(
+    useSelector((state) => state.toolkit.items).length
+  );
 
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.toolkit.items);
+  // const items = ;
 
-  const allItems = () => {
-    const basket = JSON.parse(localStorage.getItem('basket'));
-    if (basket) {
-      setBasketItems(basket.length);
-    } else {
-      setBasketItems(0);
-    }
-  };
+  const loadData = () => {};
 
   useEffect(() => {
-    allItems();
+    // console.log(items);
+    setTimeout(() => {}, 1000);
+    loadData();
   }, []);
 
   return (

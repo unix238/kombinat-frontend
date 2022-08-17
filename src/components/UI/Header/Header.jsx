@@ -227,13 +227,20 @@ export const Header = () => {
                   <Link to='/items'>Одежда</Link>
                 </div>
                 <div className={cl.navLink}>
-                  <Link to='/items'>Дом</Link>
+                  <Link to='/items' state={{ categories: 'house' }}>
+                    Дом
+                  </Link>
                 </div>
                 <div className={cl.navLink}>
                   <Link to='/items'>Красота</Link>
                 </div>
                 <div className={cl.navLink}>
-                  <Link to='/items'>Обувь</Link>
+                  <Link
+                    to='/items'
+                    state={{ filterName: 'category', filterValue: 'footwear' }}
+                  >
+                    Обувь
+                  </Link>
                 </div>
               </div>
             </div>
@@ -245,19 +252,25 @@ export const Header = () => {
           <div className={cl.dropDownMenu}>
             <div className={cl.wrapper}>
               {forMens.map((card, index) => (
-                <div className={cl.dropDownMenuCardsContainer}>
+                <div
+                  className={cl.dropDownMenuCardsContainer}
+                  key={`header${index}`}
+                >
                   <div className={cl.dropDownMenuCard}>
                     <div className={cl.cardTitle}>Одежда</div>
                     {card.categories.map((item) => (
-                      <div className={cl.cardLink}>
+                      <div
+                        className={cl.cardLink}
+                        key={`itemheader${item.title}`}
+                      >
                         <Link to='/items'>{item.title}</Link>
                       </div>
                     ))}
                   </div>
                   <div className={cl.dropDownMenuCard}>
                     <div className={cl.cardTitle}>Стиль</div>
-                    {card.style.map((item) => (
-                      <div className={cl.cardLink}>
+                    {card.style.map((item, index) => (
+                      <div className={cl.cardLink} key={`header2${index}`}>
                         <div className={cl.cardLink}>
                           <Link to='/items'>{item.title}</Link>
                         </div>
@@ -266,8 +279,8 @@ export const Header = () => {
                   </div>
                   <div className={cl.dropDownMenuCard}>
                     <div className={cl.cardTitle}>ПОВОД</div>
-                    {card.ourChoice.map((item) => (
-                      <div className={cl.cardLink}>
+                    {card.ourChoice.map((item, index) => (
+                      <div className={cl.cardLink} key={`header123${index}`}>
                         <div className={cl.cardLink}>
                           <Link to='/items'>{item.title}</Link>
                         </div>

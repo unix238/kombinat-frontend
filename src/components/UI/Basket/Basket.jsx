@@ -20,12 +20,12 @@ export const Basket = () => {
   const makePayment = async () => {
     const orderItems = items.map((item) => {
       return {
-        item: item._id,
+        _id: item._id,
         quantity: item.quantity,
         size: item.size,
       };
     });
-
+    console.log(orderItems);
     setIsLoading(true);
     const response = await PaymentApi.addOrder(orderItems);
     if (response.status === 200) {

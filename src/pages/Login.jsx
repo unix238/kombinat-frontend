@@ -40,7 +40,9 @@ export const Login = () => {
     }
   };
 
-  const LogIn = async () => {
+  const LogIn = async (e) => {
+    console.log('dasd');
+    e.preventDefault();
     if (login.length < 0) {
       setError('Неверный номер телефона или пароль');
       return;
@@ -56,10 +58,12 @@ export const Login = () => {
         setIsLoading(false);
         setLogin('');
         setPassword('');
+        localStorage.setItem('user', JSON.stringify(req.user));
         localStorage.setItem('token', req.token);
         window.location.href = '/';
       }
     } catch (e) {
+      console.log(e);
       setError('Неверный номер телефона или пароль');
     }
   };
@@ -169,44 +173,47 @@ export const Login = () => {
             </div>
           </div>
           {currentPage === 'login' ? (
-            <div className='login__form__form'>
-              <div className='form__inputs'>
-                <div className='form__input'>
-                  <div className='input__text'>Номер телефона или e-mail</div>
-                  <input
-                    type='text'
-                    className='logininput'
-                    id='phone'
-                    placeholder='+7(___)-___-__-__'
-                    value={login}
-                    onChange={(e) => {
-                      setLogin(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className='form__input'>
-                  <div className='input__text'>Пароль</div>
-                  <input
-                    type='password'
-                    className='logininput'
-                    id='password'
-                    placeholder='Пароль'
-                    onChange={(e) => {
-                      setLoginPassword(e.target.value);
-                    }}
-                    value={loginPassword}
-                  />
-                </div>
-                <div className='error'>{error}</div>
-                <div className='submitLogin'>
-                  <Button
-                    style={{ width: '100%', height: 40 }}
-                    text='Войти в аккаунт'
-                    onClick={LogIn}
-                  />
+            <form onSubmit={LogIn}>
+              <input type='submit' hidden />
+              <div className='login__form__form'>
+                <div className='form__inputs'>
+                  <div className='form__input'>
+                    <div className='input__text'>Номер телефона или e-mail</div>
+                    <input
+                      type='text'
+                      className='logininput'
+                      id='phone'
+                      placeholder='+7(___)-___-__-__'
+                      value={login}
+                      onChange={(e) => {
+                        setLogin(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className='form__input'>
+                    <div className='input__text'>Пароль</div>
+                    <input
+                      type='password'
+                      className='logininput'
+                      id='password'
+                      placeholder='Пароль'
+                      onChange={(e) => {
+                        setLoginPassword(e.target.value);
+                      }}
+                      value={loginPassword}
+                    />
+                  </div>
+                  <div className='error'>{error}</div>
+                  <div className='submitLogin'>
+                    <Button
+                      style={{ width: '100%', height: 40 }}
+                      text='Войти в аккаунт'
+                      onClick={LogIn}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </form>
           ) : currentPage === 'register' ? (
             <>
               <div className='login__form__form'>

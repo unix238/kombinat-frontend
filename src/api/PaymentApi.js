@@ -9,7 +9,7 @@ export default class PaymentApi {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token'),
       },
-      userID: JSON.parse(localStorage.getItem('user'))._id,
+      userID: JSON.parse(localStorage.getItem('user')),
       items: orderItems,
     });
 

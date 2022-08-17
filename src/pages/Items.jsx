@@ -12,7 +12,7 @@ import { Header } from '../components/UI/Header/Header';
 import { ContactForm } from '../components/UI/ContactForm/ContactForm';
 import { Button } from '../components/UI/Button/Button';
 
-export const Items = () => {
+export const Items = (props) => {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -20,15 +20,33 @@ export const Items = () => {
   const [isFilterOpenned, setIsFilterOpenned] = useState(false);
   const [isSortOpenned, setIsSortOpenned] = useState(false);
 
-  const [isFiltered, setIsFiltered] = useState(false);
-
   const [basketItems, setBasketItems] = useState([]);
   const [favoriteItems, setFavoriteItems] = useState([]);
+
+  const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const filters = [];
+  const [filters, setFilters] = useState(
+    props.filters || {
+      price: '',
+      tags: [],
+      sort: '',
+      category: '',
+      brand: '',
+      size: '',
+    }
+  );
+
+  const addFilter = (filterName, filterValue) => {
+    if (filters[filterName].includes(filterValue)) return;
+    setFilters({
+      ...filters,
+      [filterName]: [...filters[filterName], filterValue],
+    });
+  };
 
   const getAllBasketItems = async () => {
     const items = JSON.parse(localStorage.getItem('basket'));
@@ -48,39 +66,13 @@ export const Items = () => {
     setIsLoading(true);
     const fetchedTags = await ServiceApi.getTags();
     setTags(fetchedTags);
+    const fetcgedCategories = await ServiceApi.getCategories();
+    setCategories(fetcgedCategories);
+    const fetchedBrands = await ServiceApi.getBrands();
+    setBrands(fetchedBrands);
 
     const fetchedItems = await ServiceApi.getItems(page);
     setItems(fetchedItems.data);
-    setFilteredItems(fetchedItems.data);
-    setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
-    setIsLoading(false);
-  };
-
-  const addFilter = (filter) => {
-    let isFilterUnique = true;
-    filters.forEach((item) => {
-      if (item.tags === filter.tags) {
-        isFilterUnique = false;
-      }
-    });
-
-    if (isFilterUnique) {
-      filters.push(filter);
-    } else {
-      filters.forEach((item, index) => {
-        if (item.tags === filter.tags) {
-          filters.splice(index, 1);
-        }
-      });
-    }
-
-    setIsFiltered(true);
-    loadFilteredItems();
-  };
-
-  const loadFilteredItems = async () => {
-    setIsLoading(true);
-    const fetchedItems = await ServiceApi.getAllItemsByTags(filters, page);
     setFilteredItems(fetchedItems.data);
     setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
     setIsLoading(false);
@@ -95,6 +87,10 @@ export const Items = () => {
   useEffect(() => {
     loadData();
   }, [page]);
+
+  useEffect(() => {
+    console.log(filters);
+  }, [filters]);
 
   return (
     <div>
@@ -129,45 +125,35 @@ export const Items = () => {
                     <div className='filters__arrow open'>
                       <ArrowRight />
                     </div>
-                    Бренды
+                    Категории
                   </div>
                   <div className='filter__open filters__subtitles'>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      Bershka
-                    </div>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      Pul&Bear
-                    </div>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      Zara
-                    </div>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      Tommy Hilfiger
-                    </div>
+                    {categories.map((category) => (
+                      <div
+                        className='filters__subtitle'
+                        key={`category${category._id}`}
+                      >
+                        <input
+                          type='checkbox'
+                          name=''
+                          id=''
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              addFilter('category', category._id);
+                            } else {
+                              setFilters({
+                                ...filters,
+                                category: filters.category.filter(
+                                  (id) => id !== category._id
+                                ),
+                              });
+                            }
+                          }}
+                          className='filters__checkbox'
+                        />
+                        {category.title}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -176,48 +162,71 @@ export const Items = () => {
                     <div className='filters__arrow open'>
                       <ArrowRight />
                     </div>
-                    Размер
+                    Бренды
                   </div>
-                  <div className='filters__subtitles filter__open'>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      S
-                    </div>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      M
-                    </div>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      L
-                    </div>
-                    <div className='filters__subtitle'>
-                      <input
-                        type='checkbox'
-                        name=''
-                        id=''
-                        className='filters__checkbox'
-                      />
-                      XL
-                    </div>
+                  <div className='filter__open filters__subtitles'>
+                    {brands.map((brand) => (
+                      <div
+                        className='filters__subtitle'
+                        key={`category${brand._id}`}
+                      >
+                        <input
+                          type='checkbox'
+                          name=''
+                          id=''
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              addFilter('brand', brand._id);
+                            } else {
+                              setFilters({
+                                ...filters,
+                                brand: filters.brand.filter(
+                                  (id) => id !== brand._id
+                                ),
+                              });
+                            }
+                          }}
+                          className='filters__checkbox'
+                        />
+                        {brand.title}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
+                <div className='filters__item'>
+                  <div className='filters__title'>
+                    <div className='filters__arrow open'>
+                      <ArrowRight />
+                    </div>
+                    Тэги
+                  </div>
+                  <div className='filters__subtitles filter__open'>
+                    {tags.map((tag) => (
+                      <div className='filters__subtitle' key={`tags${tag._id}`}>
+                        <input
+                          type='checkbox'
+                          name=''
+                          id=''
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              addFilter('tags', tag._id);
+                            } else {
+                              setFilters({
+                                ...filters,
+                                tags: filters.tags.filter(
+                                  (id) => id !== tag._id
+                                ),
+                              });
+                            }
+                          }}
+                          className='filters__checkbox'
+                        />
+                        {tag.title}
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <div className='filters__item'>
                   <div className='filters__title'>
                     <div className='filters__arrow open'>
@@ -233,6 +242,7 @@ export const Items = () => {
                         name=''
                         id=''
                         value={0}
+                        onChange={() => {}}
                         className='filters__price'
                       />
                       до
@@ -241,6 +251,7 @@ export const Items = () => {
                         name=''
                         id=''
                         value={0}
+                        onChange={() => {}}
                         className='filters__price'
                       />
                     </div>
@@ -251,16 +262,6 @@ export const Items = () => {
                   text={'Применить фильтры'}
                   style={{ width: '100%', height: 51 }}
                 />
-
-                {/* {tags.map((tag) => (
-                <div
-                  className='filter__item'
-                  onClick={() => addFilter({ tags: tag._id })}
-                  key={tag._id}
-                >
-                  {tag.title}
-                </div>
-              ))} */}
               </div>
             )}
           </div>

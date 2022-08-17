@@ -91,4 +91,14 @@ export default class ServiceApi {
     const req = await axios.get(`${link}items/tags`);
     return req.data;
   }
+
+  static async getCategories() {
+    const req = await axios.get(`${link}items/categories`);
+    return req.data;
+  }
+
+  static async getBrands() {
+    const req = await axios.get(`${link}items/brands`);
+    return req.data;
+  }
 }

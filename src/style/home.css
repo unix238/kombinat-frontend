@@ -10,6 +10,18 @@
   src: url('../fonts/robotoFlex.ttf');
 }
 
+
+.notification-success {
+  background: #000 !important;
+  color: #fff !important;
+  opacity: .8 !important;
+  width: 380px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+
+}
+
 * {
   margin: 0;
   padding: 0;

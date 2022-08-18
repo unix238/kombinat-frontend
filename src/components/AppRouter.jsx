@@ -5,6 +5,7 @@ import { Header } from '../components/UI/Header/Header';
 import { Footer } from './UI/Footer/Footer';
 import { ProtectedRoute } from './ProtectedRoute';
 import { Admin } from '../pages/Admin';
+import { NotificationContainer } from 'react-notifications';
 
 import {
   loadBasketItems,
@@ -25,6 +26,8 @@ export const AppRouter = () => {
 
   return (
     <BrowserRouter>
+      <NotificationContainer />
+
       <Routes>
         {routes.map((route) => (
           <Route

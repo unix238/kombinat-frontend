@@ -5,6 +5,7 @@ import { store } from './rtk/index';
 import App from './App';
 
 import './fonts/robotoFlex.ttf';
+import 'react-notifications/lib/notifications.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

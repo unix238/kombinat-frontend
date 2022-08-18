@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ShoppingCart } from '../Icons/ShoppingCart';
 import { ShareCard } from '../Icons/ShareCard';
+import { FavoriteCardIcon } from '../Icons/FavoriteCardIcon';
 
 import {
   addItemToBasket,
@@ -11,6 +12,7 @@ import {
 
 import cl from './ItemCard.module.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { NotificationManager } from 'react-notifications';
 import { Favorite } from '../Icons/Favorite';
 
 export const ItemCard = ({ item, style }) => {
@@ -38,6 +40,24 @@ export const ItemCard = ({ item, style }) => {
     }
   };
 
+  const addToBasket = (item) => {
+    if (items.filter((i) => i._id === item._id).length > 0) {
+      NotificationManager.success('Товар убран из корзины');
+    } else {
+      NotificationManager.success('Товар добавлен в корзину');
+    }
+    dispatch(addItemToBasket({ ...item, quantity: 1, size: '1' }));
+  };
+
+  const addToFav = (item) => {
+    if (favorites.filter((i) => i._id === item._id).length > 0) {
+      NotificationManager.success('Товар убран из избранного');
+    } else {
+      NotificationManager.success('Товар добавлен в избранное');
+    }
+    dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
+  };
+
   useEffect(() => {
     checkBasket();
     checkFavorite();
@@ -47,16 +67,22 @@ export const ItemCard = ({ item, style }) => {
     <div className={cl.item__card}>
       <div className={cl.item__image}>
         <div className={cl.fav__icon}>
-          <Favorite
-            isEmpty={true}
-            width={'24'}
-            height={'24'}
-            isRed={inFavorite ? true : false}
-            isCard={true}
-            addToFavorite={() => {
-              dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
-            }}
-          />
+          {!inFavorite ? (
+            <FavoriteCardIcon
+              addToFavorite={() => {
+                addToFav(item);
+                setInFavorite(!inFavorite);
+              }}
+            />
+          ) : (
+            <FavoriteCardIcon
+              color={'red'}
+              addToFavorite={() => {
+                addToFav(item);
+                setInFavorite(!inFavorite);
+              }}
+            />
+          )}
         </div>
         <img
           src={item.images[0]}
@@ -86,7 +112,7 @@ export const ItemCard = ({ item, style }) => {
           <div className={cl.item__links}>
             <div
               onClick={() => {
-                dispatch(addItemToBasket({ ...item, quantity: 1, size: '1' }));
+                addToBasket(item);
               }}
             >
               {!inBasket ? <ShoppingCart /> : <ShoppingCart color={'#000'} />}

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ArrowRight } from '../components/UI/Icons/ArrowRight';
+import { Notification } from '../components/UI/Notification/Notification';
+import { NotificationManager } from 'react-notifications';
 
 import '../style/items.css';
 import { Recent } from '../components/UI/Recent/Recent';
@@ -30,6 +32,9 @@ export const Items = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+
+  const [notificationText, setNotificationText] = useState('');
+  const [notificationType, setNotificationType] = useState('');
 
   const [filters, setFilters] = useState(
     props.filters || {
@@ -102,6 +107,7 @@ export const Items = (props) => {
   return (
     <div>
       <Header />
+      <Notification type={notificationType} message={'dsdas'} />
       <div className='wrapper'>
         <div className='options'>
           <div className='filters'>

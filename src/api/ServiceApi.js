@@ -100,4 +100,12 @@ export default class ServiceApi {
     const req = await axios.get(`${link}items/brands`);
     return req.data;
   }
+
+  static async getFilteredItems(filters, page = 1, limit = 12) {
+    const req = await axios.post(
+      `${link}items/get/filters?page=${page}&limit=${limit}`,
+      filters
+    );
+    return req;
+  }
 }

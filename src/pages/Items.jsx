@@ -41,9 +41,10 @@ export const Items = (props) => {
       price: '',
       tags: [],
       sort: '',
-      category: '',
-      brand: '',
-      size: '',
+      category: [],
+      brand: [],
+      size: [],
+      sort: [],
     }
   );
 
@@ -88,6 +89,14 @@ export const Items = (props) => {
     setFilteredItems(fetchedItems.data);
     setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
     setIsLoading(false);
+  };
+
+  const applyFilters = async () => {
+    const req = await ServiceApi.getFilteredItems(filters, page, 12);
+    if (req) {
+      setFilteredItems(req.data);
+      setTotalPages(Math.ceil(req.headers['x-total-count'] / 12));
+    }
   };
 
   useEffect(() => {
@@ -274,6 +283,7 @@ export const Items = (props) => {
                 <Button
                   text={'Применить фильтры'}
                   style={{ width: '100%', height: 51 }}
+                  onClick={applyFilters}
                 />
               </div>
             )}

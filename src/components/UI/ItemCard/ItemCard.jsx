@@ -108,7 +108,12 @@ export const ItemCard = ({ item, style }) => {
         </div>
 
         <div className={cl.item__other}>
-          <div className={cl.item__price}>{item.price} ₸</div>
+          <div className={cl.item__price}>
+            {item.price.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}{' '}
+            ₸
+          </div>
           <div className={cl.item__links}>
             <div
               onClick={() => {

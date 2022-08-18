@@ -85,7 +85,12 @@ export const Detail = () => {
             <div className='detail__right'>
               <div className='container'>
                 <div className='title'>{item.title}</div>
-                <div className='price'>{item.price} ₸</div>
+                <div className='price'>
+                  {item.price.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}{' '}
+                  ₸
+                </div>
                 <div className='size__choose'>
                   <div className='size__subtitle'>Таблица размеров</div>
                   <div className='select__size'>

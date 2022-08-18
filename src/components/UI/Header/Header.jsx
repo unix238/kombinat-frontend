@@ -159,9 +159,9 @@ export const Header = () => {
               <div className={cl.link}>
                 <Help width={'25'} height={'25'} />
               </div>
-              <div className={cl.link}>
+              {/* <div className={cl.link}>
                 <Notifications width={'25'} height={'25'} />
-              </div>
+              </div> */}
               <div className={cl.link}>
                 <Link to='/wishlist'>
                   <Favorite width={'25'} height={'25'} />

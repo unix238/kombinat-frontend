@@ -40,7 +40,12 @@ export const BasketCard = ({ item }) => {
               }}
             >
               {item.title}
-              <div className={cl.subtitle}>{item.price} ₸</div>
+              <div className={cl.subtitle}>
+                {item.price.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}
+                ₸
+              </div>
             </div>
           </div>
           <div className={cl.bottomText}>

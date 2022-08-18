@@ -23,18 +23,12 @@ export const Items = (props) => {
   const [isFilterOpenned, setIsFilterOpenned] = useState(false);
   const [isSortOpenned, setIsSortOpenned] = useState(false);
 
-  const [basketItems, setBasketItems] = useState([]);
-  const [favoriteItems, setFavoriteItems] = useState([]);
-
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [brands, setBrands] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-
-  const [notificationText, setNotificationText] = useState('');
-  const [notificationType, setNotificationType] = useState('');
 
   const [filters, setFilters] = useState(
     props.filters || {
@@ -56,53 +50,47 @@ export const Items = (props) => {
     });
   };
 
-  const getAllBasketItems = async () => {
-    const items = JSON.parse(localStorage.getItem('basket'));
-    if (items) {
-      setBasketItems(items);
-    }
-  };
-
-  const getAllFavoriteItems = async () => {
-    const items = JSON.parse(localStorage.getItem('favorite'));
-    if (items) {
-      setFavoriteItems(items);
-    }
-  };
-
   const loadData = async () => {
     setIsLoading(true);
-    console.log(location);
     if (location.state) {
       addFilter(location.state.filterName, location.state.filterValue);
+      applyFilters();
+    } else {
+      const fetchedItems = await ServiceApi.getItems(page);
+      setFilteredItems(fetchedItems.data);
+      setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
     }
-
     const fetchedTags = await ServiceApi.getTags();
     setTags(fetchedTags);
     const fetcgedCategories = await ServiceApi.getCategories();
     setCategories(fetcgedCategories);
     const fetchedBrands = await ServiceApi.getBrands();
     setBrands(fetchedBrands);
-
-    const fetchedItems = await ServiceApi.getItems(page);
-    setItems(fetchedItems.data);
-    setFilteredItems(fetchedItems.data);
-    setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
     setIsLoading(false);
   };
 
   const applyFilters = async () => {
-    const req = await ServiceApi.getFilteredItems(filters, page, 12);
-    if (req) {
-      setFilteredItems(req.data);
-      setTotalPages(Math.ceil(req.headers['x-total-count'] / 12));
+    try {
+      setIsLoading(true);
+      if (Object.keys(filters).length == 0) {
+        loadData();
+      }
+      const req = await ServiceApi.getFilteredItems(filters, page, 12);
+      if (req) {
+        setFilteredItems(req.data);
+        setTotalPages(Math.ceil(req.headers['x-total-count'] / 12));
+        console.log(req.headers['x-total-count']);
+        setIsLoading(false);
+      } else {
+        console.log('ERRORR');
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   useEffect(() => {
     loadData();
-    getAllBasketItems();
-    getAllFavoriteItems();
   }, []);
 
   useEffect(() => {
@@ -110,13 +98,12 @@ export const Items = (props) => {
   }, [page]);
 
   useEffect(() => {
-    console.log(filters);
+    applyFilters();
   }, [filters]);
 
   return (
     <div>
       <Header />
-      <Notification type={notificationType} message={'dsdas'} />
       <div className='wrapper'>
         <div className='options'>
           <div className='filters'>
@@ -158,7 +145,8 @@ export const Items = (props) => {
                         <input
                           type='checkbox'
                           name=''
-                          id=''
+                          id={category._id}
+                          checked={filters.category.includes(category._id)}
                           onChange={(e) => {
                             if (e.target.checked) {
                               addFilter('category', category._id);
@@ -173,7 +161,12 @@ export const Items = (props) => {
                           }}
                           className='filters__checkbox'
                         />
-                        {category.title}
+                        <label
+                          htmlFor={category._id}
+                          className='filters__label'
+                        >
+                          {category.title}
+                        </label>
                       </div>
                     ))}
                   </div>
@@ -195,7 +188,8 @@ export const Items = (props) => {
                         <input
                           type='checkbox'
                           name=''
-                          id=''
+                          id={brand._id}
+                          checked={filters.brand.includes(brand._id)}
                           onChange={(e) => {
                             if (e.target.checked) {
                               addFilter('brand', brand._id);
@@ -210,7 +204,7 @@ export const Items = (props) => {
                           }}
                           className='filters__checkbox'
                         />
-                        {brand.title}
+                        <label htmlFor={brand._id}>{brand.title}</label>
                       </div>
                     ))}
                   </div>
@@ -228,8 +222,9 @@ export const Items = (props) => {
                       <div className='filters__subtitle' key={`tags${tag._id}`}>
                         <input
                           type='checkbox'
-                          name=''
-                          id=''
+                          name={tag._id}
+                          id={tag._id}
+                          checked={filters.tags.includes(tag._id)}
                           onChange={(e) => {
                             if (e.target.checked) {
                               addFilter('tags', tag._id);
@@ -244,7 +239,7 @@ export const Items = (props) => {
                           }}
                           className='filters__checkbox'
                         />
-                        {tag.title}
+                        <label htmlFor={tag._id}>{tag.title}</label>
                       </div>
                     ))}
                   </div>
@@ -331,9 +326,15 @@ export const Items = (props) => {
         </div>
         <div className='items__list'>
           {isLoading ? (
-            <Loader />
+            <div style={{ height: '70vh', width: '1000px' }}>
+              <Loader />
+            </div>
           ) : (
-            filteredItems.map((item) => <ItemCard key={item._id} item={item} />)
+            filteredItems.map((item) => (
+              <div className='items__item'>
+                <ItemCard key={item._id} item={item} />
+              </div>
+            ))
           )}
         </div>
         <Pagination totalPages={totalPages} setPage={setPage} />

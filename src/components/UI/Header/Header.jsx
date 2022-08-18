@@ -237,7 +237,10 @@ export const Header = () => {
                 <div className={cl.navLink}>
                   <Link
                     to='/items'
-                    state={{ filterName: 'category', filterValue: 'footwear' }}
+                    state={{
+                      filterName: 'category',
+                      filterValue: '62e86b18bfee8b32ab6c2a90',
+                    }}
                   >
                     Обувь
                   </Link>

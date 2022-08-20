@@ -38,11 +38,14 @@ export const Items = (props) => {
       category: [],
       brand: [],
       size: [],
-      sort: [],
     }
   );
 
   const addFilter = (filterName, filterValue) => {
+    if (filterName === 'sort') {
+      setFilters({ ...filters, [filterName]: filterValue });
+      return;
+    }
     if (filters[filterName].includes(filterValue)) return;
     setFilters({
       ...filters,
@@ -91,14 +94,11 @@ export const Items = (props) => {
 
   useEffect(() => {
     loadData();
-  }, []);
-
-  useEffect(() => {
-    loadData();
   }, [page]);
 
   useEffect(() => {
     applyFilters();
+    console.log(filters);
   }, [filters]);
 
   return (
@@ -140,7 +140,7 @@ export const Items = (props) => {
                     {categories.map((category) => (
                       <div
                         className='filters__subtitle'
-                        key={`category${category._id}`}
+                        key={`categggory${category._id}`}
                       >
                         <input
                           type='checkbox'
@@ -183,7 +183,7 @@ export const Items = (props) => {
                     {brands.map((brand) => (
                       <div
                         className='filters__subtitle'
-                        key={`category${brand._id}`}
+                        key={`brand${brand._id}`}
                       >
                         <input
                           type='checkbox'
@@ -219,7 +219,10 @@ export const Items = (props) => {
                   </div>
                   <div className='filters__subtitles filter__open'>
                     {tags.map((tag) => (
-                      <div className='filters__subtitle' key={`tags${tag._id}`}>
+                      <div
+                        className='filters__subtitle'
+                        key={`taggs${tag._id}`}
+                      >
                         <input
                           type='checkbox'
                           name={tag._id}
@@ -283,16 +286,19 @@ export const Items = (props) => {
               </div>
             )}
           </div>
-          <div
-            className='sortings'
-            onClick={() => {
-              setIsSortOpenned(!isSortOpenned);
-            }}
-          >
-            <div>Сортировка</div>
-            <div>
-              <ArrowRight />
+          <div className='sortings'>
+            <div
+              className='sortings'
+              onClick={() => {
+                setIsSortOpenned(!isSortOpenned);
+              }}
+            >
+              <div>Сортировка</div>
+              <div>
+                <ArrowRight />
+              </div>
             </div>
+
             {isSortOpenned && (
               <div className='sort__items'>
                 <div
@@ -307,17 +313,38 @@ export const Items = (props) => {
                   <div className='filters__title'>Сортировка</div>
                 </div>
                 <div className='sort__item'>
-                  <input type='radio' name='sort' id='asc' />
-                  <label htmlFor='asc'>Цена (по убыванию)</label>
+                  <input
+                    type='radio'
+                    name='sort'
+                    id='asc'
+                    onChange={() => {
+                      addFilter('sort', 'asc');
+                    }}
+                  />
+                  <label htmlFor='asc'>Цена (по возрастанию)</label>
                 </div>
 
                 <div className='sort__item'>
-                  <input type='radio' name='sort' id='desc' />
+                  <input
+                    type='radio'
+                    name='sort'
+                    id='desc'
+                    onChange={() => {
+                      addFilter('sort', 'desc');
+                    }}
+                  />
                   <label htmlFor='desc'>Цена (по убыванию)</label>
                 </div>
 
                 <div className='sort__item'>
-                  <input type='radio' name='sort' id='date' />
+                  <input
+                    type='radio'
+                    name='sort'
+                    id='date'
+                    onChange={() => {
+                      addFilter('sort', 'date');
+                    }}
+                  />
                   <label htmlFor='date'>Дата добавления</label>
                 </div>
               </div>
@@ -332,7 +359,7 @@ export const Items = (props) => {
           ) : (
             filteredItems.map((item) => (
               <div className='items__item'>
-                <ItemCard key={item._id} item={item} />
+                <ItemCard key={`${item._id}items__items`} item={item} />
               </div>
             ))
           )}

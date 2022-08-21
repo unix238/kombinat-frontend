@@ -14,6 +14,7 @@ import {
 } from '../rtk/toolkitReducer';
 
 import { useDispatch } from 'react-redux';
+import { Profile } from '../pages/Profile';
 
 export const AppRouter = () => {
   const [routes, setRoutes] = useState(defaultRoutes);
@@ -38,6 +39,11 @@ export const AppRouter = () => {
           />
         ))}
         <Route path={'/protected'} element={<ProtectedRoute />} exact={true} />
+        <Route
+          path={'/profile'}
+          element={<ProtectedRoute admin={false} Component={Profile} />}
+          exact={true}
+        />
         <Route
           path={'/admin'}
           element={<ProtectedRoute admin={true} Component={Admin} />}

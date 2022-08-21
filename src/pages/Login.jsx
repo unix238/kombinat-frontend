@@ -70,34 +70,40 @@ export const Login = () => {
 
   const register = async () => {
     if (validateEmail(newEmail) && validatePhone(newPhone)) {
-      setCurrentPage('activation');
       const user = {
         phone: newPhone,
         name: newName,
         email: newEmail,
       };
-      const req = await ServiceApi.register(user);
-      if (req) {
-        if (req.status == 205) {
-          const activationMessageRequest = await ServiceApi.sendActivationCode(
-            newEmail
-          );
-          if (activationMessageRequest) {
+      try {
+        const req = await ServiceApi.register(user);
+        console.log(req.status); // НЕ УБИРАТЬ КАКИСТО ХУЕМ ВСЕ ЛОМАЕТСЯ
+        if (req) {
+          if (req.status == 205) {
+            const activationMessageRequest =
+              await ServiceApi.sendActivationCode(newEmail);
+            if (activationMessageRequest) {
+              if (activationMessageRequest.status === 200) {
+                console.log('Code sent');
+              }
+            }
+            setCurrentPage('activation');
+          }
+          if (req.status == 200) {
+            const activationMessageRequest =
+              await ServiceApi.sendActivationCode(newEmail);
             if (activationMessageRequest.status === 200) {
               console.log('Code sent');
             }
+            setCurrentPage('activation');
           }
         }
-        if (req.status == 200) {
-          const activationMessageRequest = await ServiceApi.sendActivationCode(
-            newEmail
-          );
-          if (activationMessageRequest.status === 200) {
-            console.log('Code sent');
-          }
-        }
+      } catch (e) {
+        setRegError('Пользователь с таким номером телефона уже существует');
+        console.log('2131312323wqdas');
       }
     } else {
+      console.log('daxczx');
       setRegError('Проверьте правильность введенных данных');
     }
   };

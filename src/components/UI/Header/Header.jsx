@@ -173,7 +173,7 @@ export const Header = () => {
                 </Link>
               </div>
               <div className={cl.link}>
-                <Link to='/login'>
+                <Link to='/profile'>
                   <Account width={'25'} height={'25'} />
                 </Link>
               </div>
@@ -209,7 +209,9 @@ export const Header = () => {
               </div>
               <div className={cl.navAccount}>
                 Добро пожаловать,{' '}
-                <span className={cl.user}>{user ? user.name : 'Гость!'}</span>
+                <span className={cl.user}>
+                  <Link to='/profile'>{user ? user.name : 'Гость!'}</Link>
+                </span>
               </div>
             </div>
             <div className={cl.bottomLinks}>

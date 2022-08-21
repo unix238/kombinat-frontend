@@ -103,8 +103,7 @@ export const ItemCard = ({ item, style }) => {
             {item.title}
           </div>
           <div className={cl.item__subtitle} style={style}>
-            {/* {item.descriptions[0]} */}
-            {item.tags[0]}|{item.categories[0]}
+            {item.descriptions[0]}
           </div>
         </div>
 

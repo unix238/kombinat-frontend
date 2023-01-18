@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const link = 'http://localhost:3001/';
+const link = 'http://localhost:8080/';
 
 export default class ServiceApi {
   static async getPosts(page = 1, limit = 3) {

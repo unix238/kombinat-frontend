@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 
-const link = 'http://localhost:3001/';
+const link = 'http://localhost:8080/';
 
 export default class PaymentApi {
   static async addOrder(orderItems) {

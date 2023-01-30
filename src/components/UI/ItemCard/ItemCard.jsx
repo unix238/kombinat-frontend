@@ -85,7 +85,8 @@ export const ItemCard = ({ item, style }) => {
           )}
         </div>
         <img
-          src={item.images[0]}
+          // src={item.images[0]}
+          src={Array.isArray(item.images) ? item.images[0] : item.images}
           alt={item.name}
           onClick={() => {
             router(`/item/${item._id}`);
@@ -103,7 +104,7 @@ export const ItemCard = ({ item, style }) => {
             {item.title}
           </div>
           <div className={cl.item__subtitle} style={style}>
-            {item.descriptions[0]}
+            {item.descriptions}
           </div>
         </div>
 

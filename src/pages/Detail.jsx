@@ -74,12 +74,8 @@ export const Detail = () => {
                   <Help />
                 </div>
                 <div className='decripition__title'>Описание</div>
-                <div className='decripition__subtitle'>
-                  {item.descriptions[0]}
-                </div>
-                <div className='decripition__subtitle'>
-                  {item.descriptions[1]}
-                </div>
+                <div className='decripition__subtitle'>{item.descriptions}</div>
+                <div className='decripition__subtitle'>{item.descriptions}</div>
               </div>
             </div>
             <div className='detail__right'>
@@ -117,10 +113,7 @@ export const Detail = () => {
                     </div>
                     <div className='decripition__title'>Описание</div>
                     <div className='decripition__subtitle'>
-                      {item.descriptions[0]}
-                    </div>
-                    <div className='decripition__subtitle'>
-                      {item.descriptions[0]}
+                      {item.characteristics}
                     </div>
                     <div className='decripition__title'>
                       Примерная дата доставки:

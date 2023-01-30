@@ -94,6 +94,7 @@ export const Items = (props) => {
 
   useEffect(() => {
     loadData();
+    document.documentElement.scrollTop = 0;
   }, [page]);
 
   useEffect(() => {

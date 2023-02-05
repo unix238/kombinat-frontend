@@ -6,7 +6,14 @@ import { useSelector } from 'react-redux';
 
 export const Recent = () => {
   const cards = useSelector((state) => state.toolkit.recent);
+  const [isCardsExist, setIsCardsExist] = useState(false);
 
+  useEffect(() => {
+    setIsCardsExist(cards.length > 0);
+  });
+  if (!isCardsExist) {
+    return null;
+  }
   return (
     <div className={cl.recently}>
       <div className='wrapper'>

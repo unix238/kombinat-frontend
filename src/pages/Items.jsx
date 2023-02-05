@@ -354,7 +354,7 @@ export const Items = (props) => {
         </div>
         <div className='items__list'>
           {isLoading ? (
-            <div style={{ height: '70vh', width: '1000px' }}>
+            <div style={{ height: '80vh', width: '1000px' }}>
               <Loader />
             </div>
           ) : (

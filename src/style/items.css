@@ -39,16 +39,18 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 70px;
+  min-height: 80vh;
+  gap: 15px;
 }
 
 .items__item {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: calc(33.33% - 10px);
   margin: 5px;
-  padding: 5px;
+  padding: 5px; */
   /* border: 1px solid #e6e6e6; */
   /* border-radius: 5px; */
   /* box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); */

@@ -23,12 +23,27 @@ const updateLocalStorage = (localStorageItem, stateItem) => {
 
 export default createReducer(initialState, {
   [addItemToBasket]: (state, action) => {
+    // if (state.items.find((item) => item === action.payload._id)) {
+    //   state.items = state.items.filter((item) => item !== action.payload._id);
+    // } else {
+    //   state.items = [...state.items, action.payload._id];
+    // }
+    // updateLocalStorage('basket', state.items);
     if (state.items.find((item) => item._id === action.payload._id)) {
+      console.log('im here!');
       state.items = state.items.filter(
         (item) => item._id !== action.payload._id
       );
     } else {
-      state.items = [...state.items, action.payload];
+      console.log('im here!');
+      console.log(state.items);
+      const newItem = {
+        _id: action.payload._id,
+        quantity: action.payload.quantity,
+        size: action.payload.size,
+      };
+      state.items = [...state.items, newItem];
+      console.log(state.items);
     }
     updateLocalStorage('basket', state.items);
   },
@@ -40,7 +55,7 @@ export default createReducer(initialState, {
   },
   [setQuantity]: (state, action) => {
     state.items = state.items.map((item) => {
-      if (item._id === action.payload.id) {
+      if (item._id === action.payload._id) {
         item.quantity = action.payload.quantity;
       }
       return item;

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ArrowRight } from '../components/UI/Icons/ArrowRight';
-import { Notification } from '../components/UI/Notification/Notification';
-import { NotificationManager } from 'react-notifications';
 
 import '../style/items.css';
 import { Recent } from '../components/UI/Recent/Recent';

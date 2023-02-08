@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItemToBasket, clearItems } from '../../../rtk/toolkitReducer';
 import PaymentApi from '../../../api/PaymentApi';
-
+import ServiceApi from '../../../api/ServiceApi';
 import cl from './Basket.module.css';
 import { Button } from '../Button/Button';
 import { BasketCard } from '../BasketCard/BasketCard';
@@ -14,6 +14,22 @@ export const Basket = () => {
 
   const dispatch = useDispatch();
   const items = useSelector((state) => state.toolkit.items);
+
+  const loadItems = async () => {
+    try {
+      const response = await ServiceApi.getItemsBySearch(items);
+      if (response.status === 200) {
+        setBasketItems(response.data);
+        setIsLoading(false);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    loadItems();
+  }, []);
 
   const [totalCount, setTotalCount] = useState(0);
 
@@ -54,7 +70,7 @@ export const Basket = () => {
     <div className={cl.basket}>
       {!isLoading ? (
         <div className={cl.items}>
-          {items.map((item) => {
+          {basketItems.map((item) => {
             return <BasketCard item={item} key={`bask${item._id}`} />;
           })}
         </div>

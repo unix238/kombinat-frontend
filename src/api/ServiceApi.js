@@ -108,4 +108,13 @@ export default class ServiceApi {
     );
     return req;
   }
+
+  static async getItemsBySearch(items) {
+    const req = await axios.get(`${link}items/basket-items`, {
+      params: {
+        items: items,
+      },
+    });
+    return req;
+  }
 }

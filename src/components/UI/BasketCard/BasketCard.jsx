@@ -11,6 +11,8 @@ import {
   setSize,
 } from '../../../rtk/toolkitReducer';
 
+import config from '../../../utils/config';
+
 export const BasketCard = ({ item }) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
@@ -27,7 +29,11 @@ export const BasketCard = ({ item }) => {
             router('/item/' + item._id);
           }}
         >
-          <img src={item.images[0]} alt='clock' className={cl.img} />
+          <img
+            src={config.upload + item.images[0]}
+            alt='clock'
+            className={cl.img}
+          />
         </div>
         <div className={cl.text}>
           <div className={cl.topText}>
@@ -72,7 +78,7 @@ export const BasketCard = ({ item }) => {
               );
             })}
           </Select>
-          <Select
+          {/* <Select
             style={{ width: '220px' }}
             onChange={(e) => {
               console.log(e.target.value);
@@ -88,7 +94,7 @@ export const BasketCard = ({ item }) => {
                 </option>
               );
             })}
-          </Select>
+          </Select> */}
         </div>
         <div
           className={cl.delete}

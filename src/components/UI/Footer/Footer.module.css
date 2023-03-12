@@ -104,6 +104,7 @@
   width: 455px;
   margin-top: 52px;
 }
+
 .spacer {
   margin-top: 40px;
   margin-bottom: 10px;
@@ -117,6 +118,7 @@
   cursor: pointer;
   margin-right: 32px;
 }
+
 .links {
   display: flex;
   margin-top: 15px;
@@ -125,4 +127,19 @@
 .wrapper {
   width: 940px;
   margin: 0 auto;
+}
+
+
+@media (max-width: 400px) {
+  .wrapper {
+    width: 100%;
+  }
+
+  .footer__main {
+    flex-direction: column;
+  }
+
+  .footer__right {
+    width: 100%;
+  }
 }

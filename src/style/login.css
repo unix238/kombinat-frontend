@@ -280,3 +280,14 @@ a {
     font-size: 12px;
     line-height: 20px;
 }
+
+
+@media (max-width: 400px) {
+    .faq {
+        flex-direction: column;
+    }
+
+    .wrapper {
+        width: 100%;
+    }
+}

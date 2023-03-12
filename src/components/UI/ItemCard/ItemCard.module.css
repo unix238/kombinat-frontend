@@ -17,6 +17,7 @@
     height: 220px;
     cursor: pointer;
     overflow: hidden;
+    background: #fff;
 }
 
 .image-gallery {

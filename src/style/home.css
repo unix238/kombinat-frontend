@@ -104,3 +104,21 @@
   background-repeat: no-repeat;
   width: 100%;
 }
+
+@media (max-width: 400px) {
+  .faq {
+    flex-direction: column;
+  }
+
+  .wrapper {
+    width: 100%;
+  }
+
+  .news__cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
+  }
+}

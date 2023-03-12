@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react';
 import { Button } from '../Button/Button';
 import cl from './MainCard.module.css';
@@ -14,7 +16,7 @@ export const MainCard = ({
     <div className={cl.news__card}>
       <div className={cl.news__card__left}>
         {isImageLeft ? (
-          <img src={image} width={'459px'} height={'459px'} />
+          <img src={image} className={cl.img} />
         ) : (
           <>
             <div className={cl.news__card__title}>{title}</div>
@@ -28,7 +30,7 @@ export const MainCard = ({
       </div>
       <div className={cl.news__card__right}>
         {!isImageLeft ? (
-          <img src={image} width={'459px'} height={'459px'} />
+          <img src={image} className={cl.img} />
         ) : (
           <>
             <div className={cl.news__card__title}>{title}</div>

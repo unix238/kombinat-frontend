@@ -103,7 +103,7 @@ export const Items = (props) => {
   return (
     <div>
       <Header />
-      <div className='wrapper'>
+      <div className='wrapper items__page'>
         <div className='options'>
           <div className='filters'>
             <div

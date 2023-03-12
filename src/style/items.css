@@ -1,4 +1,7 @@
 /* @import '~react-image-gallery/styles/css/image-gallery.css'; */
+.items__page {
+  min-height: 100vh;
+}
 
 .options {
   display: flex;
@@ -186,4 +189,16 @@
 
 input[name^="sort"] {
   margin-right: 10px;
+}
+
+
+@media (max-width: 400px) {
+  .items__list {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+
+  }
 }

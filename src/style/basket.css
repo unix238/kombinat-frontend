@@ -7,6 +7,18 @@
 
 }
 
+.basket__page {
+    min-height: 70vh;
+}
+
+.center__title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    padding-top: 150px;
+}
+
 .basket__nav__links {
     display: flex;
     flex-direction: row;

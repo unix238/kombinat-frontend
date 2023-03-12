@@ -29,7 +29,6 @@ export const Home = () => {
   return (
     <>
       <Header />
-
       <div className='home'>
         <div className='wrapper'>
           <div className='news'>

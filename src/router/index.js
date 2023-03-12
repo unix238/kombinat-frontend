@@ -5,6 +5,7 @@ import { Detail } from '../pages/Detail';
 import { Basket } from '../pages/Basket';
 import { WishList } from '../pages/WishList';
 import { Login } from '../pages/Login';
+import { Payment } from '../pages/Payment';
 
 export const defaultRoutes = [
   { path: '/', component: <Home />, exact: true },
@@ -13,5 +14,6 @@ export const defaultRoutes = [
   { path: '/basket', component: <Basket />, exact: true },
   { path: '/wishlist', component: <WishList />, exact: true },
   { path: '/login', component: <Login />, exact: true },
+  { path: '/payment', component: <Payment />, exact: true },
   { path: '/*', component: <Navigate to='/' />, exact: true },
 ];

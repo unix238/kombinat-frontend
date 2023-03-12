@@ -128,3 +128,31 @@
     width: 940px;
     margin: 0 auto;
 }
+
+@media (max-width: 400px) {
+    .form__inputs {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .contact__form {
+        margin: 0 auto;
+        width: 90%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .input__block {
+        width: 100%;
+    }
+}

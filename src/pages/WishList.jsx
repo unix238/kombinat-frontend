@@ -12,7 +12,7 @@ export const WishList = () => {
     <div>
       <Header />
 
-      <div className='wrapper'>
+      <div className='wrapper basket__page'>
         <div className='basket__nav'>
           <div className='basket__nav__links'>
             <div className='basket__nav__link__div basket__active'>

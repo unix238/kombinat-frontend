@@ -171,3 +171,25 @@ a {
   filter: alpha(opacity=50);
   /* required for opacity to work in IE */
 }
+
+@media (max-width: 400px) {
+  .wrapper {
+    width: 90%;
+  }
+
+  .bottomLinks {
+    display: none;
+  }
+
+  .navAccount {
+    display: none;
+  }
+
+  .dropDownMenuCardsContainer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+}

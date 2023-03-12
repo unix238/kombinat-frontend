@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NotificationManager } from 'react-notifications';
 import { Favorite } from '../Icons/Favorite';
 
+import config from '../../../utils/config';
+
 export const ItemCard = ({ item, style }) => {
   const items = useSelector((state) => state.toolkit.items);
   const favorites = useSelector((state) => state.toolkit.favorite);
@@ -86,7 +88,11 @@ export const ItemCard = ({ item, style }) => {
         </div>
         <img
           // src={item.images[0]}
-          src={Array.isArray(item.images) ? item.images[0] : item.images}
+          src={
+            Array.isArray(item.images)
+              ? config.upload + item.images[0]
+              : config.upload + item.images
+          }
           alt={item.name}
           onClick={() => {
             router(`/item/${item._id}`);

@@ -20,7 +20,7 @@ export const Basket = () => {
 
   useEffect(() => {
     // console.log(items);
-    setTimeout(() => {}, 1000);
+    setTimeout(() => {}, 2000);
     loadData();
   }, []);
 
@@ -29,7 +29,7 @@ export const Basket = () => {
       <Header />
 
       <div className='basket'>
-        <div className='wrapper'>
+        <div className='wrapper basket__page'>
           <div className='basket__nav'>
             <div className='basket__nav__links'>
               <div

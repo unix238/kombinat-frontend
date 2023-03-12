@@ -21,12 +21,16 @@ export const WishList = () => {
   return (
     <div>
       <div className='items'>
-        {!isLoading ? (
-          favorites.map((item) => {
-            return <ItemCard key={`${item._id}ws`} item={item} />;
-          })
+        {favorites.length > 0 ? (
+          !isLoading ? (
+            favorites.map((item) => {
+              return <ItemCard key={`${item._id}ws`} item={item} />;
+            })
+          ) : (
+            <Loader />
+          )
         ) : (
-          <Loader />
+          <div className='center__title'>Тут пусто :(</div>
         )}
       </div>
     </div>

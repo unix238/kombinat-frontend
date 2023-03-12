@@ -5,34 +5,53 @@ import { Help } from '../components/UI/Icons/Help';
 import { Recent } from '../components/UI/Recent/Recent';
 import ServiceApi from '../api/ServiceApi';
 import { Loader } from '../components/UI/Loader/Loader';
-import { useDispatch } from 'react-redux';
-import { addRecentItem } from '../rtk/toolkitReducer';
+import {
+  addItemToBasket,
+  addRecentItem,
+  addItemToFavorite,
+} from '../rtk/toolkitReducer';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/UI/Header/Header';
 import { ContactForm } from '../components/UI/ContactForm/ContactForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { NotificationManager } from 'react-notifications';
+import config from '../utils/config';
 
 export const Detail = () => {
   const [item, setItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
   const [recent, setRecent] = useState([]);
-
+  const items = useSelector((state) => state.toolkit.items);
   const dispatch = useDispatch();
-
+  const favorites = useSelector((state) => state.toolkit.favorite);
+  const [size, setSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
   const router = useNavigate();
+  const [currentImage, setCurrentImage] = useState(0);
+  const addToBasket = (item) => {
+    if (items.filter((i) => i._id === item._id).length > 0) {
+      NotificationManager.success('Товар убран из корзины');
+    } else {
+      NotificationManager.success('Товар добавлен в корзину');
+    }
+    dispatch(addItemToBasket({ ...item, quantity: 1, size: size }));
+  };
+
+  const addToFav = (item) => {
+    if (favorites.filter((i) => i._id === item._id).length > 0) {
+      NotificationManager.success('Товар убран из избранного');
+    } else {
+      NotificationManager.success('Товар добавлен в избранное');
+    }
+    dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
+  };
 
   const loadData = async () => {
     const location = window.location.pathname.split('/')[2];
     const item = await ServiceApi.getItemByID(location);
     setItem(item);
     setIsLoading(false);
-    const temp = item.images.map((item) => {
-      return {
-        original: item,
-        thumbnail: item,
-      };
-    });
-    setImages(temp);
   };
 
   useEffect(() => {
@@ -57,17 +76,33 @@ export const Detail = () => {
           <div className='detail'>
             <div className='detail__left'>
               <div className='images'>
-                <ImageGallery
-                  items={images}
-                  thumbnailPosition={'right'}
-                  showFullscreenButton={false}
-                  showPlayButton={false}
-                  showThumbnails={true}
-                  showNav={false}
-                  disableThumbnailScroll={true}
-                  showBullets={true}
-                  useTranslate3D={false}
-                />
+                <div className='image__galery'>
+                  <div className='breadcrumbs' id='style-1'>
+                    {item.images.map((image, index) => {
+                      return (
+                        <div
+                          className={
+                            currentImage === index
+                              ? 'breadcrum__image__active'
+                              : 'breadcrum__image'
+                          }
+                          key={`breadcrum${index}`}
+                          onClick={() => setCurrentImage(index)}
+                        >
+                          <img src={config.upload + image} alt='' />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className='main__image'>
+                    <div className='current__image'>
+                      <img
+                        src={config.upload + item.images[currentImage]}
+                        alt=''
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className='description left'>
                 <div className='sign'>
@@ -90,8 +125,21 @@ export const Detail = () => {
                 <div className='size__choose'>
                   <div className='size__subtitle'>Таблица размеров</div>
                   <div className='select__size'>
-                    <select className='select'>
-                      <option value='Выберите размер'>Выберите размер</option>
+                    <select
+                      className='select'
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        setSize(e.target.value);
+                      }}
+                    >
+                      <option
+                        title='dads'
+                        value='Выберите размер'
+                        disabled
+                        selected
+                      >
+                        Выберите размер
+                      </option>
                       {item.sizes.map((size) => (
                         <option value='1' key={`${size}size`}>
                           {size}
@@ -99,9 +147,17 @@ export const Detail = () => {
                       ))}
                     </select>
                     <div className='button__group'>
-                      <div className='btn add__to__favor'>В избранное</div>
+                      <div
+                        className='btn add__to__favor'
+                        onClick={() => addToFav(item)}
+                      >
+                        В избранное
+                      </div>
 
-                      <div className='btn add__to__cart'>
+                      <div
+                        className='btn add__to__cart'
+                        onClick={() => addToBasket(item)}
+                      >
                         Добавить в корзину
                       </div>
                     </div>

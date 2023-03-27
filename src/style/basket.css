@@ -62,6 +62,10 @@
     color: #808080;
 }
 
+.basket__nav__continue {
+    cursor: pointer;
+}
+
 .basket__nav__a {
     font-style: normal;
     font-weight: 400;

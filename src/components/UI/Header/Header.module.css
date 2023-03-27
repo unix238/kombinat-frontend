@@ -164,6 +164,7 @@ a {
 .overlay {
   position: absolute;
   width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   background: #000;
@@ -172,7 +173,7 @@ a {
   /* required for opacity to work in IE */
 }
 
-@media (max-width: 400px) {
+@media (max-width: 440px) {
   .wrapper {
     width: 90%;
   }
@@ -185,11 +186,38 @@ a {
     display: none;
   }
 
+  .dropDownMenuBack {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: -20%;
+  }
+
+  .dropDownMenu {
+    color: #fff;
+    background: #000;
+    padding-bottom: 100px;
+  }
+
   .dropDownMenuCardsContainer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
   }
 
+  .cardTitle {
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  .dropDownMenuCard {
+    margin-bottom: 10px;
+  }
+
+  .cardLink {
+    margin-top: 15px;
+  }
 
 }

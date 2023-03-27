@@ -34,7 +34,7 @@
   width: 459px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 440px) {
   .news__card {
     flex-direction: column;
     gap: 10px

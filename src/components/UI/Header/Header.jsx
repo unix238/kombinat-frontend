@@ -298,8 +298,6 @@ export const Header = () => {
           </div>
         </div>
       )}
-
-      <div className={cl.overlay}></div>
     </div>
   );
 };

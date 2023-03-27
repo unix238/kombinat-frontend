@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Basket as BS } from '../components/UI/Basket/Basket';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import '../style/basket.css';
 import { Recent } from '../components/UI/Recent/Recent';
@@ -12,6 +13,7 @@ export const Basket = () => {
   const [basketItems, setBasketItems] = useState(
     useSelector((state) => state.toolkit.items).length
   );
+  const router = useNavigate();
 
   const dispatch = useDispatch();
   // const items = ;
@@ -46,11 +48,17 @@ export const Basket = () => {
                   className={'basket__nav__link basket__nav__title'}
                   onClick={() => {
                     setCurrentPage('basket');
+                    // router(`/items`);
                   }}
                 >
                   Корзина
                 </div>
-                <div className='basket__nav__link basket__nav__subtitle'>
+                <div
+                  onClick={() => {
+                    router(`/items`);
+                  }}
+                  className='basket__nav__continue basket__nav__subtitle'
+                >
                   Продолжить покупки
                 </div>
               </div>

@@ -114,6 +114,7 @@
     width: 100%;
 }
 
+
 .wrapper {
     width: 940px;
     margin: 0 auto;
@@ -230,4 +231,35 @@
 
 .recent {
     margin-top: 400px;
+}
+
+@media (max-width: 440px) {
+    .detail {
+        flex-direction: column;
+
+    }
+
+    .detail__left {
+        width: 100%;
+    }
+
+    .detail__right {
+        width: 100%;
+    }
+
+    .left {
+        margin-top: 0;
+    }
+
+    .size__choose {
+        margin-top: 0;
+    }
+
+    .recent {
+        margin-top: 0;
+    }
+
+    .sign {
+        display: none;
+    }
 }

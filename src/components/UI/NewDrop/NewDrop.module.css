@@ -62,7 +62,7 @@
 }
 
 
-@media (max-width: 400px) {
+@media (max-width: 440px) {
   .new__things__cards {
     flex-direction: column;
     align-items: center;

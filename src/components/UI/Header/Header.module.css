@@ -137,6 +137,10 @@ a {
   height: 100%;
 }
 
+.menuICON {
+  display: none;
+}
+
 .dropDownMenuCard {
   width: 220px;
   font-style: normal;
@@ -220,4 +224,16 @@ a {
     margin-top: 15px;
   }
 
+  .navLinks {
+    display: none;
+  }
+
+  .menuICON {
+    display: block;
+    cursor: pointer;
+  }
+
+  .search {
+    display: none;
+  }
 }

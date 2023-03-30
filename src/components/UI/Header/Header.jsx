@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import ServiceApi from '../../../api/ServiceApi';
+import { Menu } from '../Icons/Menu';
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -143,6 +144,14 @@ export const Header = () => {
             </div>
             <div className={cl.search}>
               <Search width={20} height={20} />
+            </div>
+            <div
+              className={cl.menuICON}
+              onClick={() => {
+                setIsOpen(!isOpen);
+              }}
+            >
+              <Menu width={20} height={20} />
             </div>
           </div>
         </div>

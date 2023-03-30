@@ -132,10 +132,12 @@
 
 @media (max-width: 440px) {
   .wrapper {
-    width: 100%;
+    width: 90%;
   }
 
   .footer__main {
+    padding-bottom: 50px;
+
     flex-direction: column;
   }
 

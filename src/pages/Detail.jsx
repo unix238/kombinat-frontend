@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../style/detail.css';
-import ImageGallery from 'react-image-gallery';
 import { Help } from '../components/UI/Icons/Help';
 import { Recent } from '../components/UI/Recent/Recent';
 import ServiceApi from '../api/ServiceApi';
@@ -54,6 +53,10 @@ export const Detail = () => {
     setIsLoading(false);
   };
 
+  const inBasket = (id) => {
+    return items.filter((item) => item._id === id).length > 0;
+  };
+
   useEffect(() => {
     loadData();
   }, []);
@@ -104,7 +107,7 @@ export const Detail = () => {
                   </div>
                 </div>
               </div>
-              <div className='description left'>
+              <div className='description left desc__top'>
                 <div className='sign'>
                   <Help />
                 </div>
@@ -158,7 +161,8 @@ export const Detail = () => {
                         className='btn add__to__cart'
                         onClick={() => addToBasket(item)}
                       >
-                        Добавить в корзину
+                        {/* Добавить в корзину */}
+                        {inBasket(item._id) ? 'Убрать из корзины' : 'В корзину'}
                       </div>
                     </div>
                   </div>

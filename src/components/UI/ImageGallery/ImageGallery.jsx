@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import cl from './ImageGallery.module.css';
 
 export const ImageGallery = ({ images }) => {
@@ -43,7 +43,8 @@ export const ImageGallery = ({ images }) => {
                     : cl.thumbnail__image
                 }
               >
-                <img src={image} alt='thumbnail' id={cl.thumbnail} />
+                dasdasdasd
+                {/* <img src={image} alt='thumbnail' id={cl.thumbnail} /> */}
               </div>
             ))}
           </div>

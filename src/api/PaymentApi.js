@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 
-const link = 'http://localhost:8080/';
+// const link = 'http://localhost:8080/';
+const link = 'http://dev.kmbinat.com/';
 
 export default class PaymentApi {
   static async addOrder(orderItems) {

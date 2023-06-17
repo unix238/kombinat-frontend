@@ -42,14 +42,5 @@ export const validateCard = (card) => {
 
 export const validateAddress = (fullAddress) => {
   const { country, name, surname, phone, city, index, address } = fullAddress;
-  return (
-    country &&
-    name &&
-    surname &&
-    phone &&
-    city &&
-    index &&
-    address &&
-    validatePhone(phone)
-  );
+  return country && name && phone && city && index && address && phone;
 };

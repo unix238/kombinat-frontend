@@ -1,13 +1,19 @@
 import axios from "axios";
 
-// const link = "http://localhost:8080/";
-const link = "http://dev.kmbinat.com/";
+const link = "http://localhost:8080/";
+// const link = "http://dev.kmbinat.com/";
 
 export default class ServiceApi {
   static async getPosts(page = 1, limit = 3) {
     const req = await axios.get(`${link}news/get?page=${page}&limit=${limit}`);
     return req.data;
   }
+
+  static async googleAuth(response) {
+    const req = await axios.post(`${link}auth/google`, { response });
+    return req.data;
+  }
+
   static async login(userLogin, password) {
     const req = await axios.post(`${link}auth/login`, { userLogin, password });
     if (req.status == 200) {
@@ -117,5 +123,31 @@ export default class ServiceApi {
       },
     });
     return req;
+  }
+
+  static async updateUser(data) {
+    try {
+      const req = await axios.post(`${link}auth/update`, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      return req;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  static async updateDelivery(data) {
+    try {
+      const req = await axios.post(`${link}auth/delivery`, data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      return req;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

@@ -1,32 +1,62 @@
-import React from 'react';
-import '../style/login.css';
-import { Logo } from '../components/UI/Icons/Logo';
-import { Search } from '../components/UI/Icons/Search';
-import { Link } from 'react-router-dom';
-import { Button } from '../components/UI/Button/Button';
-import { Facebook } from '../components/UI/Icons/Facebook';
-import { useState } from 'react';
-import ServiceApi from '../api/ServiceApi';
-import { validateEmail, validatePhone } from '../utils/validate';
+import React, { useEffect } from "react";
+import "../style/login.css";
+import { Logo } from "../components/UI/Icons/Logo";
+import { Search } from "../components/UI/Icons/Search";
+import { Link } from "react-router-dom";
+import { Button } from "../components/UI/Button/Button";
+import { Facebook } from "../components/UI/Icons/Facebook";
+import { useState } from "react";
+import ServiceApi from "../api/ServiceApi";
+import { validateEmail, validatePhone } from "../utils/validate";
+import { useGoogleLogin } from "@react-oauth/google";
+import FacebookLogin from "@greatsumini/react-facebook-login";
+import { Google } from "../components/UI/Icons/Google";
+import { VK } from "../components/UI/Icons/VK";
+import { Twitter } from "../components/UI/Icons/Twitter";
 
 export const Login = () => {
-  const [login, setLogin] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [error, setError] = useState('');
-  const [regError, setRegError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [activationCode, setActivationCode] = useState('');
+  const [login, setLogin] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [error, setError] = useState("");
+  const [regError, setRegError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [activationCode, setActivationCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [newPhone, setNewPhone] = useState('');
-  const [newName, setNewName] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password1, setPassword1] = useState('');
+  const [newPhone, setNewPhone] = useState("");
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password1, setPassword1] = useState("");
 
-  const [choice, setChoice] = useState('email');
+  const [choice, setChoice] = useState("email");
 
-  const [currentPage, setCurrentPage] = useState('login');
+  const [currentPage, setCurrentPage] = useState("login");
+
+  const googleLogin = async (tokenResponse) => {
+    const response = await ServiceApi.googleAuth(tokenResponse);
+    console.log(response);
+    console.log(response.status);
+
+    if (response?.status == 200) {
+      localStorage.setItem("token", response.token);
+      window.location.reload();
+    }
+  };
+
+  const facebookLogin = async (data) => {
+    // const response = await Se.facebookAuth(data);
+    // console.log(response);
+    // if (response.status == 200) {
+    // Cookies.set("token", response.data.token);
+    // window.location.reload();
+    // }
+  };
+
+  const googleLoginHandler = useGoogleLogin({
+    onSuccess: (tokenResponse) => googleLogin(tokenResponse),
+  });
+
   const changeState = (state) => {
     setCurrentPage(state);
   };
@@ -34,39 +64,58 @@ export const Login = () => {
   const handlePassword = (e, set) => {
     set(e.target.value);
     if (password !== password1) {
-      setPasswordError('Пароли не совпадают');
+      setPasswordError("Пароли не совпадают");
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
   };
 
   const LogIn = async (e) => {
-    console.log('dasd');
+    console.log("dasd");
     e.preventDefault();
     if (login.length < 0) {
-      setError('Неверный номер телефона или пароль');
+      setError("Неверный номер телефона или пароль");
       return;
     }
     if (loginPassword.length < 0) {
-      setError('Неверный номер телефона или пароль');
+      setError("Неверный номер телефона или пароль");
       return;
     }
     try {
       const req = await ServiceApi.login(login, loginPassword);
       if (req) {
-        setError('');
+        setError("");
         setIsLoading(false);
-        setLogin('');
-        setPassword('');
-        localStorage.setItem('user', JSON.stringify(req.user));
-        localStorage.setItem('token', req.token);
-        window.location.href = '/';
+        setLogin("");
+        setPassword("");
+        localStorage.setItem("user", JSON.stringify(req.user));
+        localStorage.setItem("token", req.token);
+        window.location.href = "/";
       }
     } catch (e) {
       console.log(e);
-      setError('Неверный номер телефона или пароль');
+      setError("Неверный номер телефона или пароль");
     }
   };
+
+  const checkToken = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const req = await ServiceApi.checkToken(token);
+        if (req?._id) {
+          console.log(req?._id);
+          window.location.href = "/";
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   const register = async () => {
     if (validateEmail(newEmail) && validatePhone(newPhone)) {
@@ -84,27 +133,27 @@ export const Login = () => {
               await ServiceApi.sendActivationCode(newEmail);
             if (activationMessageRequest) {
               if (activationMessageRequest.status === 200) {
-                console.log('Code sent');
+                console.log("Code sent");
               }
             }
-            setCurrentPage('activation');
+            setCurrentPage("activation");
           }
           if (req.status == 200) {
             const activationMessageRequest =
               await ServiceApi.sendActivationCode(newEmail);
             if (activationMessageRequest.status === 200) {
-              console.log('Code sent');
+              console.log("Code sent");
             }
-            setCurrentPage('activation');
+            setCurrentPage("activation");
           }
         }
       } catch (e) {
-        setRegError('Пользователь с таким номером телефона уже существует');
-        console.log('2131312323wqdas');
+        setRegError("Пользователь с таким номером телефона уже существует");
+        console.log("2131312323wqdas");
       }
     } else {
-      console.log('daxczx');
-      setRegError('Проверьте правильность введенных данных');
+      console.log("daxczx");
+      setRegError("Проверьте правильность введенных данных");
     }
   };
 
@@ -115,7 +164,7 @@ export const Login = () => {
         email: newEmail,
       });
       if (res.status === 200) {
-        setCurrentPage('password');
+        setCurrentPage("password");
       }
     } catch (e) {
       console.log(e);
@@ -128,8 +177,8 @@ export const Login = () => {
       password,
     });
     if (req.status === 200) {
-      setCurrentPage('login');
-      console.log('REGISTER SUCCESS');
+      setCurrentPage("login");
+      console.log("REGISTER SUCCESS");
     }
   };
 
@@ -155,30 +204,30 @@ export const Login = () => {
           <div className='login__register__choice'>
             <div
               className={
-                currentPage === 'login'
-                  ? 'login__choice active__choice'
-                  : 'login__choice'
+                currentPage === "login"
+                  ? "login__choice active__choice"
+                  : "login__choice"
               }
               onClick={() => {
-                changeState('login');
+                changeState("login");
               }}
             >
               Войти
             </div>
             <div
               className={
-                currentPage === 'register' || currentPage === 'activation'
-                  ? 'register__choice active__choice'
-                  : 'register__choice'
+                currentPage === "register" || currentPage === "activation"
+                  ? "register__choice active__choice"
+                  : "register__choice"
               }
               onClick={() => {
-                changeState('register');
+                changeState("register");
               }}
             >
               Регистрация
             </div>
           </div>
-          {currentPage === 'login' ? (
+          {currentPage === "login" ? (
             <form onSubmit={LogIn}>
               <input type='submit' hidden />
               <div className='login__form__form'>
@@ -212,7 +261,7 @@ export const Login = () => {
                   <div className='error'>{error}</div>
                   <div className='submitLogin'>
                     <Button
-                      style={{ width: '100%', height: 40 }}
+                      style={{ width: "100%", height: 40 }}
                       text='Войти в аккаунт'
                       onClick={LogIn}
                     />
@@ -220,7 +269,7 @@ export const Login = () => {
                 </div>
               </div>
             </form>
-          ) : currentPage === 'register' ? (
+          ) : currentPage === "register" ? (
             <>
               <div className='login__form__form'>
                 <div className='form__inputs'>
@@ -264,8 +313,8 @@ export const Login = () => {
                       <div className='radiobutton'>
                         <input
                           type='radio'
-                          value={'email'}
-                          checked={choice === 'email'}
+                          value={"email"}
+                          checked={choice === "email"}
                           onChange={(e) => {
                             setChoice(e.target.value);
                           }}
@@ -279,8 +328,8 @@ export const Login = () => {
                       <div className='radiobutton'>
                         <input
                           type='radio'
-                          value={'sms'}
-                          checked={choice === 'sms'}
+                          value={"sms"}
+                          checked={choice === "sms"}
                           onChange={(e) => {
                             setChoice(e.target.value);
                           }}
@@ -296,7 +345,7 @@ export const Login = () => {
                   <div className='error'>{regError}</div>
                   <div className='submitLogin'>
                     <Button
-                      style={{ width: '100%', height: 40 }}
+                      style={{ width: "100%", height: 40 }}
                       text='Получить код подтверждения'
                       onClick={register}
                     />
@@ -304,7 +353,7 @@ export const Login = () => {
                 </div>
               </div>
             </>
-          ) : currentPage === 'activation' ? (
+          ) : currentPage === "activation" ? (
             <div className='activation'>
               <div className='activationText'>
                 Код был отправлен на номер {newPhone}. Чтобы подтвердить свою
@@ -322,12 +371,12 @@ export const Login = () => {
               </div>
               <div className='sendAgain'>Отправить повторно через 00:58</div>
               <Button
-                style={{ width: '100%', height: 40 }}
+                style={{ width: "100%", height: 40 }}
                 text='Продолжить'
                 onClick={accountActivationHandler}
               />
             </div>
-          ) : currentPage === 'password' ? (
+          ) : currentPage === "password" ? (
             <div className='password'>
               <div className='login__form__form'>
                 <div className='form__inputs'>
@@ -358,11 +407,11 @@ export const Login = () => {
                     />
                   </div>
                   <div className='error'>
-                    {passwordError ? passwordError : ''}
+                    {passwordError ? passwordError : ""}
                   </div>
                   <div className='submitLogin'>
                     <Button
-                      style={{ width: '100%', height: 40 }}
+                      style={{ width: "100%", height: 40 }}
                       text='Создать аккаунт'
                       onClick={continueRegistration}
                     />
@@ -378,29 +427,45 @@ export const Login = () => {
 
           <div className='login__via'>
             <div className='login__via__tabs'>
-              <div className='login__tab'>
+              <FacebookLogin
+                appId='802681641562466'
+                onSuccess={(response) => {
+                  facebookLogin(response);
+                  console.log(response);
+                }}
+                onFail={(error) => {
+                  console.log("Login Failed!", error);
+                }}
+                onProfileSuccess={(response) => {
+                  console.log("Get Profile Success!", response);
+                  // facebookLogin(response.email);
+                }}
+                render={({ onClick, logout }) => (
+                  <div className='login__tab' onClick={onClick}>
+                    <div className='tab__icon'>
+                      <Facebook color={"black"} />
+                    </div>
+                    <div className='tab__title'>Facebook</div>
+                  </div>
+                )}
+              />
+              <div className='login__tab' onClick={googleLoginHandler}>
                 <div className='tab__icon'>
-                  <Facebook color={'black'} />
-                </div>
-                <div className='tab__title'>Facebook</div>
-              </div>
-              <div className='login__tab'>
-                <div className='tab__icon'>
-                  <Facebook color={'black'} />
+                  <Google color={"black"} />
                 </div>
                 <div className='tab__title'>Google</div>
               </div>
-              <div className='login__tab'>
+              <div className='login__tab disabled'>
                 <div className='tab__icon'>
-                  <Facebook color={'black'} />
+                  <VK color={"black"} />
                 </div>
                 <div className='tab__title'>Vkontakte</div>
               </div>
-              <div className='login__tab'>
+              <div className='login__tab disabled'>
                 <div className='tab__icon'>
-                  <Facebook color={'black'} />
+                  <Twitter color={"black"} />
                 </div>
-                <div className='tab__title'>Apple</div>
+                <div className='tab__title'>Twitter</div>
               </div>
             </div>
           </div>

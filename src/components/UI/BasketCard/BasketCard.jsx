@@ -72,12 +72,14 @@ export const BasketCard = ({ item, size }) => {
               Размер: {item.sizes.includes(size) ? size : item.sizes[0]}
             </option>
 
-            {item.sizes.map((size) => {
-              return (
-                <option value={size} key={size}>
-                  Размер: {size}
-                </option>
-              );
+            {item.sizes.map((s) => {
+              if (s != size) {
+                return (
+                  <option value={s} key={s}>
+                    Размер: {s}
+                  </option>
+                );
+              }
             })}
           </Select>
           {/* <Select

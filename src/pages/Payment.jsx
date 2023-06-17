@@ -32,6 +32,21 @@ export const Payment = ({ props }) => {
   const [cardDate, setCardDate] = useState("");
   const [cardCVC, setCardCVC] = useState("");
 
+  const [user, setUser] = useState(null);
+
+  const loadUser = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const user = await ServiceApi.checkToken(token);
+        setUser(user);
+        console.log(user);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   const updateState = (e, state) => {
     state(e.target.value);
   };
@@ -99,6 +114,7 @@ export const Payment = ({ props }) => {
   useEffect(() => {
     console.log(items);
     loadData();
+    loadUser();
   }, []);
 
   useEffect(() => {
@@ -108,6 +124,16 @@ export const Payment = ({ props }) => {
       }, 0)
     );
   }, [items]);
+
+  useEffect(() => {
+    setAddress(user?.deliveryData?.address);
+    setCountry(user?.deliveryData?.country);
+    setCity(user?.deliveryData?.city);
+    setIndex(user?.deliveryData?.zipCode);
+    setName(user?.name?.split(" ")[0]);
+    setSurname(user?.deliveryData?.name?.split(" ")[1]);
+    setPhone(user?.deliveryData?.phone);
+  }, [user]);
 
   return (
     <>

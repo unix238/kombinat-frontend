@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-// const link = 'http://localhost:8080/';
-const link = 'http://dev.kmbinat.com/';
+// const link = "http://localhost:8080/";
+const link = "http://dev.kmbinat.com/";
 
 export default class ServiceApi {
   static async getPosts(page = 1, limit = 3) {
@@ -13,7 +13,7 @@ export default class ServiceApi {
     if (req.status == 200) {
       return req.data;
     } else {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       return false;
     }
   }
@@ -37,7 +37,7 @@ export default class ServiceApi {
   }
 
   static async checkToken(token) {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     const req = await axios.post(`${link}auth/token-verify`);
     if (req.status == 200) {
       return req.data;
@@ -113,7 +113,7 @@ export default class ServiceApi {
   static async getItemsBySearch(items) {
     const req = await axios.get(`${link}items/basket-items`, {
       params: {
-        items: items,
+        items: items.map((i) => i._id),
       },
     });
     return req;

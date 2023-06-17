@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { Header } from '../components/UI/Header/Header';
-import { BasketCard } from '../components/UI/BasketCard/BasketCard';
-import cl from '../style/Payment.module.css';
-import ServiceApi from '../api/ServiceApi';
-import { OrderCard } from '../components/UI/OrderCard/OrderCard';
-import { validateAddress, validateCard } from '../utils/validate';
-import { OrderAdressForm } from '../components/UI/OrderAdressForm/OrderAdressForm';
-import { OrderPaymentForm } from '../components/UI/OrderAdressForm/OrderPaymentForm';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { Header } from "../components/UI/Header/Header";
+import { BasketCard } from "../components/UI/BasketCard/BasketCard";
+import cl from "../style/Payment.module.css";
+import ServiceApi from "../api/ServiceApi";
+import { OrderCard } from "../components/UI/OrderCard/OrderCard";
+import { validateAddress, validateCard } from "../utils/validate";
+import { OrderAdressForm } from "../components/UI/OrderAdressForm/OrderAdressForm";
+import { OrderPaymentForm } from "../components/UI/OrderAdressForm/OrderPaymentForm";
 
 export const Payment = ({ props }) => {
   let location = useLocation();
@@ -18,22 +18,46 @@ export const Payment = ({ props }) => {
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [country, setCountry] = useState('');
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [phone, setPhone] = useState('');
-  const [city, setCity] = useState('');
-  const [index, setIndex] = useState('');
-  const [address, setAddress] = useState('');
+  const [country, setCountry] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
+  const [index, setIndex] = useState("");
+  const [address, setAddress] = useState("");
   const [totalCosts, setTotalCosts] = useState(0);
 
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardName, setCardName] = useState('');
-  const [cardDate, setCardDate] = useState('');
-  const [cardCVC, setCardCVC] = useState('');
+  const [cardNumber, setCardNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardDate, setCardDate] = useState("");
+  const [cardCVC, setCardCVC] = useState("");
 
   const updateState = (e, state) => {
     state(e.target.value);
+  };
+
+  const setupWidget = () => {
+    // window.FreedomPaySDK.setup('mypublickey', 'lU9HFGGboiFuEZvM');
+  };
+
+  const pay = async (amount) => {
+    var data = {
+      token: "e2e4091b895d33d7bbf20c8db225812e",
+      payment: {
+        amount: amount,
+        language: "ru", // Язык виджета
+        description: "Описание заказа",
+      },
+      successCallback: function (payment) {
+        console.log(payment); // Данные о платеже
+      },
+      errorCallback: function (payment) {
+        console.log(payment); // Данные о платеже
+      },
+    };
+
+    var widget = new window.PayBox(data);
+    widget.create();
   };
 
   const nextStep = () => {
@@ -41,16 +65,16 @@ export const Payment = ({ props }) => {
       if (
         validateAddress({ country, name, surname, phone, city, index, address })
       ) {
-        setCurrentStep(2);
+        pay(totalCosts);
       } else {
-        alert('Заполните все поля!');
+        alert("Заполните все поля!");
       }
     }
     if (currentStep == 2) {
       if (validateCard(cardNumber, cardName, cardDate, cardCVC)) {
         setCurrentStep(3);
       } else {
-        alert('Заполните все поля!');
+        alert("Заполните все поля!");
       }
     }
   };
@@ -147,27 +171,27 @@ export const Payment = ({ props }) => {
               <div className='prices'>
                 <div className={cl.positions}>
                   <div className={cl.itemCosts}>
-                    <div className={[cl.costLeft, cl.subtitle].join(' ')}>
+                    <div className={[cl.costLeft, cl.subtitle].join(" ")}>
                       Доставка
                     </div>
-                    <div className={[cl.costLeft, cl.subtitle].join(' ')}>
+                    <div className={[cl.costLeft, cl.subtitle].join(" ")}>
                       1000 ₸
                     </div>
                   </div>
                   <div className={cl.itemCosts}>
-                    <div className={[cl.costLeft, cl.subtitle].join(' ')}>
+                    <div className={[cl.costLeft, cl.subtitle].join(" ")}>
                       Товары
                     </div>
-                    <div className={[cl.costLeft, cl.subtitle].join(' ')}>
+                    <div className={[cl.costLeft, cl.subtitle].join(" ")}>
                       {totalCosts} ₸
                     </div>
                   </div>
                 </div>
                 <div className={cl.total}>
-                  <div className={[cl.costLeft, cl.subtitle].join(' ')}>
+                  <div className={[cl.costLeft, cl.subtitle].join(" ")}>
                     Итого к оплате
                   </div>
-                  <div className={[cl.costLeft, cl.subtitle].join(' ')}>
+                  <div className={[cl.costLeft, cl.subtitle].join(" ")}>
                     {totalCosts + 1000} ₸
                   </div>
                 </div>

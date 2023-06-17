@@ -1,5 +1,5 @@
-import React from 'react';
-import cl from '../../../style/Payment.module.css';
+import React from "react";
+import cl from "../../../style/Payment.module.css";
 
 export const OrderPaymentForm = ({
   setCardNumber,
@@ -13,6 +13,8 @@ export const OrderPaymentForm = ({
   updateState,
   nextStep,
 }) => {
+  const showWidget = () => {};
+
   return (
     <div className={cl.inputs}>
       <div className={cl.inputsTitle}>Кредитная карта</div>

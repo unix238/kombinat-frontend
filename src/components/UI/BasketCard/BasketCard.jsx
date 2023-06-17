@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import cl from './BasketCard.module.css';
-import { Select } from '../Select/Select';
-import { useEffect } from 'react';
+import React, { useState } from "react";
+import cl from "./BasketCard.module.css";
+import { Select } from "../Select/Select";
+import { useEffect } from "react";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   addItemToBasket,
   setQuantity,
   setSize,
-} from '../../../rtk/toolkitReducer';
+} from "../../../rtk/toolkitReducer";
 
-import config from '../../../utils/config';
+import config from "../../../utils/config";
 
-export const BasketCard = ({ item }) => {
+export const BasketCard = ({ item, size }) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const dispatch = useDispatch();
@@ -23,10 +23,10 @@ export const BasketCard = ({ item }) => {
     <div className={cl.item}>
       <div className={cl.left}>
         <div
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: "pointer" }}
           className={cl.image}
           onClick={() => {
-            router('/item/' + item._id);
+            router("/item/" + item._id);
           }}
         >
           <img
@@ -40,9 +40,9 @@ export const BasketCard = ({ item }) => {
             <div className={cl.title}>{item.seller}</div>
             <div
               className={cl.subtitle}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               onClick={() => {
-                router('/item/' + item._id);
+                router("/item/" + item._id);
               }}
             >
               {item.title}
@@ -63,12 +63,14 @@ export const BasketCard = ({ item }) => {
       <div className={cl.right}>
         <div className={cl.select__size}>
           <Select
-            style={{ width: '220px' }}
+            style={{ width: "220px" }}
             onChange={(e) => {
               dispatch(setSize({ id: item._id, size: e.target.value }));
             }}
           >
-            <option value={item.quantity}>Размер: {item.size}</option>
+            <option value={item.quantity}>
+              Размер: {item.sizes.includes(size) ? size : item.sizes[0]}
+            </option>
 
             {item.sizes.map((size) => {
               return (

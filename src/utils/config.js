@@ -1,4 +1,4 @@
 export default {
-  // upload: 'http://localhost:8080/',
-  upload: 'http://dev.kmbinat.com/',
+  upload: "http://localhost:8088/",
+  // upload: 'http://dev.kmbinat.com/',
 };

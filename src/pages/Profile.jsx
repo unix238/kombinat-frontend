@@ -13,6 +13,8 @@ import { Account } from "../components/UI/Icons/Account";
 import { Button } from "../components/UI/Button/Button";
 import ServiceApi from "../api/ServiceApi";
 import pfp from "../img/defaultPFP.png";
+import PaymentApi from "../api/PaymentApi";
+import { ItemCard } from "../components/UI/ItemCard/ItemCard";
 
 export const Profile = () => {
   const [currentTab, setCurrentTab] = React.useState(0);
@@ -20,6 +22,8 @@ export const Profile = () => {
   const [isDeliveryCardOpen, setIsDeliveryCardOpen] = React.useState(false);
   const [isContactCardOpen, setIsContactCardOpen] = React.useState(false);
   const [isPaymentCardOpen, setIsPaymentCardOpen] = React.useState(false);
+
+  const [myOrders, setMyOrders] = React.useState([]);
 
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -32,6 +36,11 @@ export const Profile = () => {
   const [address, setAddress] = useState("");
 
   const [user, setUser] = useState(null);
+
+  const loadOrders = async () => {
+    const response = await PaymentApi.getOrders();
+    setMyOrders(response?.data?.orders);
+  };
 
   const loadUser = async () => {
     const token = localStorage.getItem("token");
@@ -77,6 +86,10 @@ export const Profile = () => {
   useEffect(() => {
     loadUser();
   }, [isContactCardOpen]);
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
 
   return (
     <>
@@ -400,7 +413,51 @@ export const Profile = () => {
               </div>
             </>
           )}
-          {currentTab === 1 && <></>}
+          {currentTab === 1 && (
+            <>
+              {myOrders?.map((order) => (
+                <div className={cl.order}>
+                  <div className={cl.orderText}>
+                    <div className={cl.left}>
+                      <div className={cl.orderTitle}>
+                        ID Заказа: {order?._id}
+                      </div>
+                      <div className={cl.orderTitle}>
+                        ID Платежа: {order?._id}
+                      </div>
+                      <div className={cl.orderTitle}>
+                        Дата оплаты:{" "}
+                        {new Date(order?.paymentDate).toLocaleString()}
+                      </div>
+                      <div className={cl.orderTitle}>
+                        Способо оплаты: {order?.paymentCardPan}
+                      </div>
+                    </div>
+                    <div className={cl.right}>
+                      <div className={cl.orderTitle}>
+                        Имя: {order?.deliveryData?.name}
+                      </div>
+                      <div className={cl.orderTitle}>
+                        Город: {order?.deliveryData?.city}
+                      </div>
+                      <div className={cl.orderTitle}>
+                        Адрес: {order?.deliveryData?.address}
+                      </div>
+                      <div className={cl.orderTitle}>
+                        Контактный номер телефона:{order?.deliveryData?.phone}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={cl.orderDate}></div>
+                  <div className={cl.items}>
+                    {order.items.map((item) => (
+                      <ItemCard item={item.item} size={item.size} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </>

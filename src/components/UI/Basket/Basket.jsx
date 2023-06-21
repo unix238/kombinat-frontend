@@ -21,7 +21,6 @@ export const Basket = () => {
       const response = await ServiceApi.getItemsBySearch(items);
       if (response.status === 200) {
         setBasketItems(response.data);
-        console.log(response.data);
         setIsLoading(false);
       }
     } catch (e) {
@@ -59,16 +58,14 @@ export const Basket = () => {
 
   useEffect(() => {
     countPrice();
-    console.log(items);
   }, [items, basketItems]);
 
   const countPrice = () => {
     let temp = 0;
     basketItems.map((item) => {
       temp += item.price;
-      console.log(item);
     });
-    console.log(temp);
+
     setTotalCount(temp);
   };
 

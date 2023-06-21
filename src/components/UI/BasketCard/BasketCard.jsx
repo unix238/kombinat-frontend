@@ -37,7 +37,7 @@ export const BasketCard = ({ item, size }) => {
         </div>
         <div className={cl.text}>
           <div className={cl.topText}>
-            <div className={cl.title}>{item.seller}</div>
+            <div className={cl.title}>{item.title}</div>
             <div
               className={cl.subtitle}
               style={{ cursor: "pointer" }}

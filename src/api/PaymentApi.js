@@ -14,4 +14,12 @@ export default class PaymentApi {
 
     return req;
   }
+
+  static async getOrders() {
+    return await axios.get(`${link}payments/get-orders`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+  }
 }

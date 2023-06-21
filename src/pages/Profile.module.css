@@ -417,3 +417,29 @@ a {
   display: flex;
   gap: 15px;
 }
+
+.order {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 4px 4px 4px #00000040;
+  margin: 10px;
+  padding: 18px 24px;
+}
+.orderText {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.orderTitle {
+  font-family: "Roboto Flex";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.items {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}

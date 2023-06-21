@@ -57,11 +57,6 @@ export const Payment = ({ props }) => {
   };
 
   const pay = async (amount) => {
-    if (user) {
-      console.log(user);
-    } else {
-      console.log("no user");
-    }
     const sendItems = items.map((item) => ({
       id: item._id,
       size: item.size,
@@ -76,10 +71,10 @@ export const Payment = ({ props }) => {
         city,
         index,
         address,
+        zipCode: index,
       },
     };
     const makeOrder = await PaymentApi.addOrder(order);
-    console.log(makeOrder);
     window.location.replace(makeOrder.data);
   };
 

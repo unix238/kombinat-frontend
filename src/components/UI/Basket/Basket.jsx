@@ -81,7 +81,7 @@ export const Basket = () => {
               return (
                 <BasketCard
                   item={item}
-                  size={items.find((i) => i._id === item._id).size}
+                  size={items?.find((i) => i._id === item._id)?.size}
                   key={`bask${item._id}`}
                 />
               );

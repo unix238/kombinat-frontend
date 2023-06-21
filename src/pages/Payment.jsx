@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation } from "react-router-dom";
 import { Header } from "../components/UI/Header/Header";
 import { BasketCard } from "../components/UI/BasketCard/BasketCard";
 import cl from "../style/Payment.module.css";
@@ -9,6 +9,7 @@ import { OrderCard } from "../components/UI/OrderCard/OrderCard";
 import { validateAddress, validateCard } from "../utils/validate";
 import { OrderAdressForm } from "../components/UI/OrderAdressForm/OrderAdressForm";
 import { OrderPaymentForm } from "../components/UI/OrderAdressForm/OrderPaymentForm";
+import PaymentApi from "../api/PaymentApi";
 
 export const Payment = ({ props }) => {
   let location = useLocation();
@@ -56,23 +57,30 @@ export const Payment = ({ props }) => {
   };
 
   const pay = async (amount) => {
-    var data = {
-      token: "e2e4091b895d33d7bbf20c8db225812e",
-      payment: {
-        amount: amount,
-        language: "ru", // Язык виджета
-        description: "Описание заказа",
-      },
-      successCallback: function (payment) {
-        console.log(payment); // Данные о платеже
-      },
-      errorCallback: function (payment) {
-        console.log(payment); // Данные о платеже
+    if (user) {
+      console.log(user);
+    } else {
+      console.log("no user");
+    }
+    const sendItems = items.map((item) => ({
+      id: item._id,
+      size: item.size,
+    }));
+    const order = {
+      items: sendItems,
+      deliveryData: {
+        country,
+        name: name + " " + surname,
+        surname,
+        phone,
+        city,
+        index,
+        address,
       },
     };
-
-    var widget = new window.PayBox(data);
-    widget.create();
+    const makeOrder = await PaymentApi.addOrder(order);
+    console.log(makeOrder);
+    window.location.replace(makeOrder.data);
   };
 
   const nextStep = () => {
@@ -97,13 +105,20 @@ export const Payment = ({ props }) => {
   const loadData = async () => {
     console.log(basketItems);
     try {
-      basketItems.map(async (item) => {
-        const newItem = await ServiceApi.getItemByID(item._id);
-        setItems((prev) => [
-          ...prev,
-          { ...newItem, quantity: item.quantity, size: item.size },
-        ]);
-      });
+      // basketItems.map(async (item) => {
+      //   const newItem = await ServiceApi.getItemByID(item._id);
+      //   setItems((prev) => [
+      //     ...prev,
+      //     { ...newItem, quantity: item.quantity, size: item.size },
+      //   ]);
+      // });
+      const items = await Promise.all(
+        basketItems.map(async (item) => {
+          const newItem = await ServiceApi.getItemByID(item._id);
+          return { ...newItem, quantity: item.quantity, size: item.size };
+        })
+      );
+      setItems(items);
     } catch (e) {
       console.log(e);
     } finally {

@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import '../style/detail.css';
-import { Help } from '../components/UI/Icons/Help';
-import { Recent } from '../components/UI/Recent/Recent';
-import ServiceApi from '../api/ServiceApi';
-import { Loader } from '../components/UI/Loader/Loader';
+import React, { useState, useEffect } from "react";
+import "../style/detail.css";
+import { Help } from "../components/UI/Icons/Help";
+import { Recent } from "../components/UI/Recent/Recent";
+import ServiceApi from "../api/ServiceApi";
+import { Loader } from "../components/UI/Loader/Loader";
 import {
   addItemToBasket,
   addRecentItem,
   addItemToFavorite,
-} from '../rtk/toolkitReducer';
-import { useNavigate } from 'react-router-dom';
-import { Header } from '../components/UI/Header/Header';
-import { ContactForm } from '../components/UI/ContactForm/ContactForm';
-import { useDispatch, useSelector } from 'react-redux';
-import { NotificationManager } from 'react-notifications';
-import config from '../utils/config';
+} from "../rtk/toolkitReducer";
+import { useNavigate } from "react-router-dom";
+import { Header } from "../components/UI/Header/Header";
+import { ContactForm } from "../components/UI/ContactForm/ContactForm";
+import { useDispatch, useSelector } from "react-redux";
+import { NotificationManager } from "react-notifications";
+import config from "../utils/config";
 
 export const Detail = () => {
   const [item, setItem] = useState(null);
@@ -24,30 +24,30 @@ export const Detail = () => {
   const items = useSelector((state) => state.toolkit.items);
   const dispatch = useDispatch();
   const favorites = useSelector((state) => state.toolkit.favorite);
-  const [size, setSize] = useState('');
+  const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const router = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
   const addToBasket = (item) => {
     if (items.filter((i) => i._id === item._id).length > 0) {
-      NotificationManager.success('Товар убран из корзины');
+      NotificationManager.success("Товар убран из корзины");
     } else {
-      NotificationManager.success('Товар добавлен в корзину');
+      NotificationManager.success("Товар добавлен в корзину");
     }
     dispatch(addItemToBasket({ ...item, quantity: 1, size: size }));
   };
 
   const addToFav = (item) => {
     if (favorites.filter((i) => i._id === item._id).length > 0) {
-      NotificationManager.success('Товар убран из избранного');
+      NotificationManager.success("Товар убран из избранного");
     } else {
-      NotificationManager.success('Товар добавлен в избранное');
+      NotificationManager.success("Товар добавлен в избранное");
     }
-    dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
+    dispatch(addItemToFavorite({ ...item, quantity: 1, size: size }));
   };
 
   const loadData = async () => {
-    const location = window.location.pathname.split('/')[2];
+    const location = window.location.pathname.split("/")[2];
     const item = await ServiceApi.getItemByID(location);
     setItem(item);
     setIsLoading(false);
@@ -86,8 +86,8 @@ export const Detail = () => {
                         <div
                           className={
                             currentImage === index
-                              ? 'breadcrum__image__active'
-                              : 'breadcrum__image'
+                              ? "breadcrum__image__active"
+                              : "breadcrum__image"
                           }
                           key={`breadcrum${index}`}
                           onClick={() => setCurrentImage(index)}
@@ -122,7 +122,7 @@ export const Detail = () => {
                 <div className='price'>
                   {item.price.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
-                  })}{' '}
+                  })}{" "}
                   ₸
                 </div>
                 <div className='size__choose'>
@@ -144,7 +144,7 @@ export const Detail = () => {
                         Выберите размер
                       </option>
                       {item.sizes.map((size) => (
-                        <option value='1' key={`${size}size`}>
+                        <option value={size} key={`${size}size`}>
                           {size}
                         </option>
                       ))}
@@ -162,7 +162,7 @@ export const Detail = () => {
                         onClick={() => addToBasket(item)}
                       >
                         {/* Добавить в корзину */}
-                        {inBasket(item._id) ? 'Убрать из корзины' : 'В корзину'}
+                        {inBasket(item._id) ? "Убрать из корзины" : "В корзину"}
                       </div>
                     </div>
                   </div>

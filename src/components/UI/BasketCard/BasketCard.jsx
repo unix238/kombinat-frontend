@@ -56,7 +56,7 @@ export const BasketCard = ({ item, size }) => {
           </div>
           <div className={cl.bottomText}>
             <div className={cl.subtitle}>Доставка из:</div>
-            <div className={cl.title}>Казахстан, Петропавловск</div>
+            <div className={cl.title}>Казахстан, {item.deliveryFrom}</div>
           </div>
         </div>
       </div>

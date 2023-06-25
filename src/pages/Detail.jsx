@@ -17,6 +17,7 @@ import { NotificationManager } from "react-notifications";
 import config from "../utils/config";
 
 export const Detail = () => {
+  const navigate = useNavigate();
   const [item, setItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
@@ -55,6 +56,14 @@ export const Detail = () => {
 
   const inBasket = (id) => {
     return items.filter((item) => item._id === id).length > 0;
+  };
+
+  const onBrandClick = () => {
+    navigate("/items", { state: { brand: item.brand._id } });
+  };
+
+  const onSellerClick = () => {
+    navigate("/items", { state: { seller: item.seller._id } });
   };
 
   useEffect(() => {
@@ -119,6 +128,12 @@ export const Detail = () => {
             <div className='detail__right'>
               <div className='container'>
                 <div className='title'>{item.title}</div>
+                <div className='brand' onClick={onBrandClick}>
+                  {item?.brand?.title}
+                </div>
+                <div className='brand' onClick={onSellerClick}>
+                  {item?.seller?.name}
+                </div>
                 <div className='price'>
                   {item.price.toLocaleString(undefined, {
                     maximumFractionDigits: 2,
@@ -179,7 +194,14 @@ export const Detail = () => {
                       Примерная дата доставки:
                     </div>
                     <div className='decripition__subtitle'>
-                      23 июня — 1 июля
+                      {/* 23 июня — 1 июля */}
+                      {new Date().toLocaleDateString()} -{" "}
+                      {
+                        // date and date after 7 days
+                        new Date(
+                          new Date().getTime() + 7 * 24 * 60 * 60 * 1000
+                        ).toLocaleDateString()
+                      }
                     </div>
                   </div>
                 </div>

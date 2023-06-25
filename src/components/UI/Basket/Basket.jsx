@@ -35,6 +35,22 @@ export const Basket = () => {
   const [totalCount, setTotalCount] = useState(0);
 
   const makePayment = async () => {
+    // check if user is logged in
+    if (!localStorage.getItem("token")) {
+      // check token
+      try {
+        const request = await ServiceApi.checkToken();
+        console.log(request.status);
+        if (request.status != 200) {
+          alert("Войдите в аккаунт, чтобы совершить покупку");
+          return navigate("/login");
+        }
+      } catch (e) {
+        alert("Войдите в аккаунт, чтобы совершить покупку");
+        return navigate("/login");
+      }
+    }
+
     const orderItems = items.map((item) => {
       return {
         _id: item._id,

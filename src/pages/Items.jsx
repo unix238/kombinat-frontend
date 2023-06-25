@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import { ArrowRight } from '../components/UI/Icons/ArrowRight';
+import { ArrowRight } from "../components/UI/Icons/ArrowRight";
 
-import '../style/items.css';
-import { Recent } from '../components/UI/Recent/Recent';
-import { ItemCard } from '../components/UI/ItemCard/ItemCard';
-import ServiceApi from '../api/ServiceApi';
-import { Pagination } from '../components/UI/Pagination/Pagination';
-import { Loader } from '../components/UI/Loader/Loader';
-import { Header } from '../components/UI/Header/Header';
-import { ContactForm } from '../components/UI/ContactForm/ContactForm';
-import { Button } from '../components/UI/Button/Button';
+import "../style/items.css";
+import { Recent } from "../components/UI/Recent/Recent";
+import { ItemCard } from "../components/UI/ItemCard/ItemCard";
+import ServiceApi from "../api/ServiceApi";
+import { Pagination } from "../components/UI/Pagination/Pagination";
+import { Loader } from "../components/UI/Loader/Loader";
+import { Header } from "../components/UI/Header/Header";
+import { ContactForm } from "../components/UI/ContactForm/ContactForm";
+import { Button } from "../components/UI/Button/Button";
 
 export const Items = (props) => {
   const [items, setItems] = useState([]);
@@ -30,17 +30,18 @@ export const Items = (props) => {
 
   const [filters, setFilters] = useState(
     props.filters || {
-      price: '',
+      price: "",
       tags: [],
-      sort: '',
+      sort: "",
       category: [],
       brand: [],
       size: [],
+      seller: "",
     }
   );
 
   const addFilter = (filterName, filterValue) => {
-    if (filterName === 'sort') {
+    if (filterName === "sort") {
       setFilters({ ...filters, [filterName]: filterValue });
       return;
     }
@@ -54,12 +55,15 @@ export const Items = (props) => {
   const loadData = async () => {
     setIsLoading(true);
     if (location.state) {
-      addFilter(location.state.filterName, location.state.filterValue);
+      addFilter(
+        Object.keys(location.state)[0],
+        Object.values(location.state)[0]
+      );
       applyFilters();
     } else {
       const fetchedItems = await ServiceApi.getItems(page);
       setFilteredItems(fetchedItems.data);
-      setTotalPages(Math.ceil(fetchedItems.headers['x-total-count'] / 12));
+      setTotalPages(Math.ceil(fetchedItems.headers["x-total-count"] / 12));
     }
     const fetchedTags = await ServiceApi.getTags();
     setTags(fetchedTags);
@@ -79,11 +83,11 @@ export const Items = (props) => {
       const req = await ServiceApi.getFilteredItems(filters, page, 12);
       if (req) {
         setFilteredItems(req.data);
-        setTotalPages(Math.ceil(req.headers['x-total-count'] / 12));
-        console.log(req.headers['x-total-count']);
+        setTotalPages(Math.ceil(req.headers["x-total-count"] / 12));
+        console.log(req.headers["x-total-count"]);
         setIsLoading(false);
       } else {
-        console.log('ERRORR');
+        console.log("ERRORR");
       }
     } catch (e) {
       console.log(e);
@@ -148,7 +152,7 @@ export const Items = (props) => {
                           checked={filters.category.includes(category._id)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              addFilter('category', category._id);
+                              addFilter("category", category._id);
                             } else {
                               setFilters({
                                 ...filters,
@@ -191,7 +195,7 @@ export const Items = (props) => {
                           checked={filters.brand.includes(brand._id)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              addFilter('brand', brand._id);
+                              addFilter("brand", brand._id);
                             } else {
                               setFilters({
                                 ...filters,
@@ -229,7 +233,7 @@ export const Items = (props) => {
                           checked={filters.tags.includes(tag._id)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              addFilter('tags', tag._id);
+                              addFilter("tags", tag._id);
                             } else {
                               setFilters({
                                 ...filters,
@@ -278,8 +282,8 @@ export const Items = (props) => {
                 </div>
 
                 <Button
-                  text={'Применить фильтры'}
-                  style={{ width: '100%', height: 51 }}
+                  text={"Применить фильтры"}
+                  style={{ width: "100%", height: 51 }}
                   onClick={applyFilters}
                 />
               </div>
@@ -317,7 +321,7 @@ export const Items = (props) => {
                     name='sort'
                     id='asc'
                     onChange={() => {
-                      addFilter('sort', 'asc');
+                      addFilter("sort", "asc");
                     }}
                   />
                   <label htmlFor='asc'>Цена (по возрастанию)</label>
@@ -329,7 +333,7 @@ export const Items = (props) => {
                     name='sort'
                     id='desc'
                     onChange={() => {
-                      addFilter('sort', 'desc');
+                      addFilter("sort", "desc");
                     }}
                   />
                   <label htmlFor='desc'>Цена (по убыванию)</label>
@@ -341,7 +345,7 @@ export const Items = (props) => {
                     name='sort'
                     id='date'
                     onChange={() => {
-                      addFilter('sort', 'date');
+                      addFilter("sort", "date");
                     }}
                   />
                   <label htmlFor='date'>Дата добавления</label>
@@ -352,7 +356,7 @@ export const Items = (props) => {
         </div>
         <div className='items__list'>
           {isLoading ? (
-            <div style={{ height: '80vh', width: '1000px' }}>
+            <div style={{ height: "80vh", width: "1000px" }}>
               <Loader />
             </div>
           ) : (

@@ -131,9 +131,9 @@ export const Detail = () => {
                 <div className='brand' onClick={onBrandClick}>
                   {item?.brand?.title}
                 </div>
-                <div className='brand' onClick={onSellerClick}>
+                {/* <div className='brand' onClick={onSellerClick}>
                   {item?.seller?.name}
-                </div>
+                </div> */}
                 <div className='price'>
                   {item.price.toLocaleString(undefined, {
                     maximumFractionDigits: 2,

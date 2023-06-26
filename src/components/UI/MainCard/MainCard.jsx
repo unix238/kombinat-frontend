@@ -1,8 +1,9 @@
 /** @format */
 
-import React from 'react';
-import { Button } from '../Button/Button';
-import cl from './MainCard.module.css';
+import React from "react";
+import { Button } from "../Button/Button";
+import cl from "./MainCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 export const MainCard = ({
   image,
@@ -11,7 +12,9 @@ export const MainCard = ({
   secondSubTitle,
   link,
   isImageLeft,
+  id,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className={cl.news__card}>
       <div className={cl.news__card__left}>
@@ -24,7 +27,13 @@ export const MainCard = ({
               {subTitle}
               <div className={cl.news__card__subtitle}>{secondSubTitle}</div>
             </div>
-            <Button link={link} />
+            <Button
+              link={link}
+              onClick={() => {
+                console.log("zczx");
+                navigate(`/news/${id}`);
+              }}
+            />
           </>
         )}
       </div>
@@ -38,7 +47,13 @@ export const MainCard = ({
               {subTitle}
               <div className={cl.news__card__subtitle}>{secondSubTitle}</div>
             </div>
-            <Button link={link} />
+            <Button
+              onClick={() => {
+                console.log("zczx");
+                navigate(`/news/${id}`);
+              }}
+              link={link}
+            />
           </>
         )}
       </div>

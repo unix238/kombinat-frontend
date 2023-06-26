@@ -1,11 +1,16 @@
 import axios from "axios";
 
-// const link = "http://localhost:8080/";
-const link = "http://dev.kmbinat.com/";
+const link = "http://localhost:8080/";
+// const link = "http://dev.kmbinat.com/";
 
 export default class ServiceApi {
   static async getPosts(page = 1, limit = 3) {
     const req = await axios.get(`${link}news/get?page=${page}&limit=${limit}`);
+    return req.data;
+  }
+
+  static async getPostById(id) {
+    const req = await axios.get(`${link}news/get/${id}`);
     return req.data;
   }
 

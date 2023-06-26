@@ -1,11 +1,11 @@
-import React from 'react';
-import { Button } from '../Button/Button';
-import cl from './Footer.module.css';
-import { Facebook } from '../../UI/Icons/Facebook';
-import { Telegram } from '../../UI/Icons/Telegram';
-import { Twitter } from '../../UI/Icons/Twitter';
-import { Instagram } from '../../UI/Icons/Instagram';
-import { Youtube } from '../../UI/Icons/Youtube';
+import React from "react";
+import { Button } from "../Button/Button";
+import cl from "./Footer.module.css";
+import { Facebook } from "../../UI/Icons/Facebook";
+import { Telegram } from "../../UI/Icons/Telegram";
+import { Twitter } from "../../UI/Icons/Twitter";
+import { Instagram } from "../../UI/Icons/Instagram";
+import { Youtube } from "../../UI/Icons/Youtube";
 
 export const Footer = () => {
   return (
@@ -33,21 +33,29 @@ export const Footer = () => {
                 Пользовательское соглашение
               </div>
               <div className={cl.links}>
-                <div className={cl.link}>
+                <a
+                  className={cl.link}
+                  href='https://t.me/kmbinat'
+                  target='blank'
+                >
                   <Telegram />
-                </div>
-                <div className={cl.link}>
+                </a>
+                {/* <div className={cl.link}>
                   <Facebook />
                 </div>
                 <div className={cl.link}>
                   <Twitter />
-                </div>
-                <div className={cl.link}>
+                </div> */}
+                <a
+                  className={cl.link}
+                  href='https://www.instagram.com/kmbinat'
+                  target='blank'
+                >
                   <Instagram />
-                </div>
-                <div className={cl.link}>
+                </a>
+                {/* <div className={cl.link}>
                   <Youtube />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

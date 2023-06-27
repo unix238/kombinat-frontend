@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { ShoppingCart } from '../Icons/ShoppingCart';
-import { ShareCard } from '../Icons/ShareCard';
-import { FavoriteCardIcon } from '../Icons/FavoriteCardIcon';
+import { ShoppingCart } from "../Icons/ShoppingCart";
+import { ShareCard } from "../Icons/ShareCard";
+import { FavoriteCardIcon } from "../Icons/FavoriteCardIcon";
 
 import {
   addItemToBasket,
   addItemToFavorite,
-} from '../../../rtk/toolkitReducer';
+} from "../../../rtk/toolkitReducer";
 
-import cl from './ItemCard.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { NotificationManager } from 'react-notifications';
-import { Favorite } from '../Icons/Favorite';
+import cl from "./ItemCard.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { NotificationManager } from "react-notifications";
+import { Favorite } from "../Icons/Favorite";
 
-import config from '../../../utils/config';
+import config from "../../../utils/config";
+import ServiceApi from "../../../api/ServiceApi";
 
 export const ItemCard = ({ item, style }) => {
   const items = useSelector((state) => state.toolkit.items);
@@ -23,6 +24,8 @@ export const ItemCard = ({ item, style }) => {
   const dispatch = useDispatch();
   const router = useNavigate();
 
+  const navigate = useNavigate();
+  const [brand, setBrand] = useState(null);
   const [inBasket, setInBasket] = useState(false);
   const [inFavorite, setInFavorite] = useState(false);
 
@@ -44,25 +47,36 @@ export const ItemCard = ({ item, style }) => {
 
   const addToBasket = (item) => {
     if (items.filter((i) => i._id === item._id).length > 0) {
-      NotificationManager.success('Товар убран из корзины');
+      NotificationManager.success("Товар убран из корзины");
     } else {
-      NotificationManager.success('Товар добавлен в корзину');
+      NotificationManager.success("Товар добавлен в корзину");
     }
-    dispatch(addItemToBasket({ ...item, quantity: 1, size: '1' }));
+    dispatch(addItemToBasket({ ...item, quantity: 1, size: "1" }));
   };
 
   const addToFav = (item) => {
     if (favorites.filter((i) => i._id === item._id).length > 0) {
-      NotificationManager.success('Товар убран из избранного');
+      NotificationManager.success("Товар убран из избранного");
     } else {
-      NotificationManager.success('Товар добавлен в избранное');
+      NotificationManager.success("Товар добавлен в избранное");
     }
-    dispatch(addItemToFavorite({ ...item, quantity: 1, size: '1' }));
+    dispatch(addItemToFavorite({ ...item, quantity: 1, size: "1" }));
+  };
+
+  const onBrandClick = () => {
+    navigate("/items", { state: { brand: item.brand._id } });
+  };
+
+  const loadBrand = async () => {
+    const brands = await ServiceApi.getBrands();
+    const brand = brands.filter((i) => i._id === item.brand);
+    setBrand(brand[0]);
   };
 
   useEffect(() => {
     checkBasket();
     checkFavorite();
+    loadBrand();
   }, [items]);
 
   return (
@@ -78,7 +92,7 @@ export const ItemCard = ({ item, style }) => {
             />
           ) : (
             <FavoriteCardIcon
-              color={'red'}
+              color={"red"}
               addToFavorite={() => {
                 addToFav(item);
                 setInFavorite(!inFavorite);
@@ -109,6 +123,13 @@ export const ItemCard = ({ item, style }) => {
           >
             {item.title}
           </div>
+          <div
+            // onClick={onBrandClick}
+            className={`${cl.item__subtitle} ${cl.brand}`}
+            style={style}
+          >
+            {brand && brand.title}
+          </div>
           <div className={cl.item__subtitle} style={style}>
             {item.descriptions}
           </div>
@@ -118,7 +139,7 @@ export const ItemCard = ({ item, style }) => {
           <div className={cl.item__price}>
             {item.price.toLocaleString(undefined, {
               maximumFractionDigits: 2,
-            })}{' '}
+            })}{" "}
             ₸
           </div>
           <div className={cl.item__links}>
@@ -127,7 +148,7 @@ export const ItemCard = ({ item, style }) => {
                 addToBasket(item);
               }}
             >
-              {!inBasket ? <ShoppingCart /> : <ShoppingCart color={'#000'} />}
+              {!inBasket ? <ShoppingCart /> : <ShoppingCart color={"#000"} />}
             </div>
             <div>
               <ShareCard />

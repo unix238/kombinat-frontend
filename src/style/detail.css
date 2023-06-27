@@ -265,7 +265,9 @@
     width: 90% !important;
     align-items: center;
   }
-
+  .container {
+    height: 100%;
+  }
   .detail__left {
     width: 100%;
     gap: 30px;

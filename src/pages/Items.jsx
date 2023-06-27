@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { ArrowRight } from "../components/UI/Icons/ArrowRight";
 
@@ -14,6 +14,7 @@ import { ContactForm } from "../components/UI/ContactForm/ContactForm";
 import { Button } from "../components/UI/Button/Button";
 
 export const Items = (props) => {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -28,17 +29,16 @@ export const Items = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
 
-  const [filters, setFilters] = useState(
-    props.filters || {
-      price: "",
-      tags: [],
-      sort: "",
-      category: [],
-      brand: [],
-      size: [],
-      seller: "",
-    }
-  );
+  const [filters, setFilters] = useState({
+    price: "",
+    tags: [],
+    sort: "",
+    category: [],
+    brand: [],
+    size: [],
+    seller: "",
+    ...location.state,
+  });
 
   const addFilter = (filterName, filterValue) => {
     if (filterName === "sort") {
@@ -52,19 +52,38 @@ export const Items = (props) => {
     });
   };
 
+  const isFiltersEmpty = () => {
+    return (
+      filters?.category?.length === 0 &&
+      filters?.brand?.length === 0 &&
+      filters?.tags?.length === 0 &&
+      filters?.price === "" &&
+      filters?.sort === ""
+    );
+  };
+
   const loadData = async () => {
-    setIsLoading(true);
     if (location.state) {
       addFilter(
         Object.keys(location.state)[0],
         Object.values(location.state)[0]
       );
-      applyFilters();
+      navigate(location.pathname, {});
+      // window.history.replaceState({}, document.title);
+    }
+    if (!isFiltersEmpty()) {
+      console.log("FILTERS");
+      const req = await ServiceApi.getFilteredItems(filters, page, 12);
+      setFilteredItems(req.data);
+      setTotalPages(Math.ceil(req.headers["x-total-count"] / 12));
+      setIsLoading(false);
     } else {
+      console.log(filters);
       const fetchedItems = await ServiceApi.getItems(page);
       setFilteredItems(fetchedItems.data);
       setTotalPages(Math.ceil(fetchedItems.headers["x-total-count"] / 12));
     }
+
     const fetchedTags = await ServiceApi.getTags();
     setTags(fetchedTags);
     const fetcgedCategories = await ServiceApi.getCategories();
@@ -72,37 +91,15 @@ export const Items = (props) => {
     const fetchedBrands = await ServiceApi.getBrands();
     setBrands(fetchedBrands);
     setIsLoading(false);
-  };
-
-  const applyFilters = async () => {
-    try {
-      setIsLoading(true);
-      if (Object.keys(filters).length == 0) {
-        loadData();
-      }
-      const req = await ServiceApi.getFilteredItems(filters, page, 12);
-      if (req) {
-        setFilteredItems(req.data);
-        setTotalPages(Math.ceil(req.headers["x-total-count"] / 12));
-        console.log(req.headers["x-total-count"]);
-        setIsLoading(false);
-      } else {
-        console.log("ERRORR");
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
     loadData();
-    document.documentElement.scrollTop = 0;
-  }, [page]);
+    console.log("uses effect");
+  }, [filters, page, location.state]);
 
-  useEffect(() => {
-    applyFilters();
-    console.log(filters);
-  }, [filters]);
+  const applyFilters = async () => {};
 
   return (
     <div>
